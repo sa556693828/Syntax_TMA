@@ -11,39 +11,32 @@ function Friends() {
   const { userData } = useContext(Context);
   return (
     <>
-      <div className="bg-[#333] w-full mt-1 relative p-1 uppercase rounded-lg h-[374px]">
-        {userData && userData.user_id && userData.score && (
-          <Box userID={userData.user_id} userScore={userData.score as any} />
-        )}
-      </div>
       <div className="grid grid-cols-2 gap-1 w-full">
         {userData.score &&
           userData.score?.map((score, index) => (
             <div
               key={index}
-              className="bg-[#333] w-full h-[189px] text-white relative flex flex-col justify-between items-center uppercase rounded-lg p-1"
+              className="bg-[#333] w-full h-[189px] text-white relative flex flex-col justify-end uppercase rounded-lg p-1"
             >
-              <div className="w-full text-start">
-                <a className="text-center tracking-[1.92px] text-xs">
-                  PERSONALITY {index + 1}
-                </a>
-              </div>
-              <a className="text-[96px] tracking-[12.36px]">
-                {score > 0.5 ? "E" : "I"}
-              </a>
-              <div className="w-full justify-between flex">
-                <a className="tracking-[1.92px] text-xs">{score * 100}</a>
-                <a className="tracking-[1.92px] text-xs">%</a>
-              </div>
+              {/* <Box
+                userID={userData.user_id as number}
+                userScore={userData.score as any}
+              /> */}
+              <a className="tracking-[1.92px] text-xs z-50">friend name</a>
             </div>
           ))}
+        <div className="bg-greyBg w-full h-[189px] text-black relative flex flex-col justify-end items-center uppercase rounded-lg p-1">
+          <div className="w-full text-start">
+            <a className="text-center tracking-[1.92px] text-xs">ADD FRIEND</a>
+          </div>
+        </div>
       </div>
     </>
   );
 }
 
 function Me() {
-  const { userData } = useContext(Context);
+  const { userData, goPage } = useContext(Context);
   return (
     <>
       <div className="bg-[#333] w-full mt-1 relative p-1 uppercase rounded-lg h-[374px]">
@@ -89,6 +82,14 @@ function Me() {
             <a className="tracking-[1.92px] text-xs">ACCURACY</a>
           </div>
         </div>
+      </div>
+      <div className="w-full h-[62px]">
+        <button
+          className="text-[20px] leading-[150%] w-full h-full rounded-md bg-greyBg hover:bg-greyBg/80 text-blackBg tracking-[3.2px]"
+          onClick={() => goPage("/profile")}
+        >
+          {"GENERATE NFT"}
+        </button>
       </div>
     </>
   );
