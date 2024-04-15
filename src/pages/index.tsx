@@ -8,7 +8,6 @@ import Image from "next/image";
 import { PiDotsNineBold } from "react-icons/pi";
 import { Context } from "@/components/Provider";
 import Card from "@/components/Card";
-import Box from "@/components/AE/mintPage";
 
 export default function Home() {
   type State = 1 | 2 | 3;

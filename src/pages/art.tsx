@@ -13,8 +13,7 @@ interface ArtProps {
 export default function Art() {
   const backButton = useBackButton();
   const mainButton = useMainButton();
-  // const { userData, goPage } = useContext(Context);
-  const { goPage } = useContext(Context);
+  const { userData, goPage } = useContext(Context);
   const [revealed, setRevealed] = useState(false);
 
   const onBackButtonClick = () => {
@@ -64,9 +63,9 @@ export default function Art() {
   return (
     <div className="w-full relative p-1 h-full flex items-center justify-between flex-col gap-1">
       <div className="bg-[#333] w-full relative p-1 uppercase rounded-lg h-[374px]">
-        {/* {userData && userData.user_id && userData.score && (
+        {userData && userData.user_id && userData.score && (
           <Box userID={userData.user_id} userScore={userData.score as any} />
-        )} */}
+        )}
       </div>
       <Card className="flex flex-col items-start justify-start p-12 gap-4">
         <GridDot count={8} />
