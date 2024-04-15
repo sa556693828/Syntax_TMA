@@ -72,6 +72,23 @@ function Me() {
               </div>
             </div>
           ))}
+        <div className="bg-greyBg w-full h-[189px] text-black relative flex flex-col justify-between items-center uppercase rounded-lg p-1">
+          <div className="w-full text-start">
+            <a className="text-center tracking-[1.92px] text-xs">REDO TEST</a>
+          </div>
+        </div>
+        <div className="bg-greyBg w-full h-[189px] text-black relative flex flex-col justify-between items-center uppercase rounded-lg p-1">
+          <div className="w-full text-start">
+            <a className="text-center tracking-[1.92px] text-xs">
+              HIGHEST SCORE
+            </a>
+          </div>
+          <a className="text-[96px] tracking-[12.36px]">0</a>
+          <div className="w-full justify-between flex">
+            <a className="tracking-[1.92px] text-xs">%</a>
+            <a className="tracking-[1.92px] text-xs">ACCURACY</a>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -70,7 +70,7 @@ export default function Art() {
       <Card className="flex flex-col items-start justify-start p-12 gap-4">
         <GridDot count={8} />
         <a className="tracking-[2.56px] text-base">{`THIS IS MY INTERPRETATION OF YOUR SYNTAX AS BEING:`}</a>
-        <a>
+        <a className="tracking-[2.56px] text-base">
           {`BALANCED INTROVERTED/EXTRAVERTED`}
           {`VERY INTUITIVE`}
           {`EXTREMELY INCLINED TOWARDS THINKING`}
