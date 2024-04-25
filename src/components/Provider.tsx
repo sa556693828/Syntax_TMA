@@ -34,6 +34,7 @@ export const Context = createContext<{
     score: [],
     ton_address: "",
     inviteFrom_id: null,
+    testScore: null,
   },
   reFetchUserData: () => {},
 });
@@ -62,6 +63,7 @@ export const Provider = ({ children }: { children: any }) => {
     score: [],
     ton_address: "",
     inviteFrom_id: null,
+    testScore: null,
   });
   const [reGetUserData, setReGetUserData] = useState(false);
   const router = useRouter();
@@ -87,9 +89,7 @@ export const Provider = ({ children }: { children: any }) => {
         .from(tableMap.users)
         .select("*")
         .eq("user_id", userTG?.id);
-      console.log(user);
       if (user && user.length > 0) {
-        console.log("get");
         setUserData(user[0] as UserData);
       }
     }

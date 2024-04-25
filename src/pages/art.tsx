@@ -64,7 +64,11 @@ export default function Art() {
     <div className="w-full relative p-1 h-full flex items-center justify-between flex-col gap-1">
       <div className="bg-[#333] w-full relative p-1 uppercase rounded-lg h-[374px]">
         {userData && userData.user_id && userData.score && (
-          <Box userID={userData.user_id} userScore={userData.score as any} />
+          <Box
+            userID={userData.user_id}
+            userScore={userData.score as any}
+            className="left-[4px] top-[4px] z-10"
+          />
         )}
       </div>
       <Card className="flex flex-col items-start justify-start p-12 gap-4">

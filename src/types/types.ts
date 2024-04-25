@@ -29,6 +29,7 @@ export type UserData = {
   score: Array<number>;
   ton_address: string;
   inviteFrom_id: number | null;
+  testScore: number | null;
 };
 export type UserTG = {
   allowsWriteToPm: boolean;

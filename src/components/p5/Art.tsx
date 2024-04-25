@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 interface Props {
   userID: number;
   userScore: number[];
+  fullScreen?: boolean;
+  className?: string;
 }
 
-const Box = ({ userID, userScore }: Props) => {
+const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
   const canvasRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -332,7 +334,9 @@ const Box = ({ userID, userScore }: Props) => {
             // const canvasWidth = 200;
             const canvasHeight = canvasParent ? canvasParent.offsetHeight : 374;
             // const canvasHeight = 200;
-            const canvas = p.createCanvas(canvasWidth - 8, canvasHeight - 8);
+            const canvas = fullScreen
+              ? p.createCanvas(canvasWidth, canvasHeight)
+              : p.createCanvas(canvasWidth - 8, canvasHeight - 8);
             canvas.parent(canvasRef.current);
             p.pixelDensity(1);
             p.colorMode(p.RGB, 255, 255, 255, 1);
@@ -417,7 +421,7 @@ const Box = ({ userID, userScore }: Props) => {
   return (
     <div
       ref={canvasRef}
-      className="absolute left-[4px] top-[4px] z-10 w-full h-full rounded-lg"
+      className={`absolute z-10 w-full h-full ${className}`}
     />
   );
 };

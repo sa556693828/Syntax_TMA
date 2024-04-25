@@ -21,6 +21,8 @@ function Friends() {
               {/* <Box
                 userID={userData.user_id as number}
                 userScore={userData.score as any}
+                            className="left-[4px] top-[4px] z-10"
+
               /> */}
               <a className="tracking-[1.92px] text-xs z-50">friend name</a>
             </div>
@@ -40,9 +42,9 @@ function Me() {
   return (
     <>
       <div className="bg-[#333] w-full mt-1 relative p-1 uppercase rounded-lg h-[374px]">
-        {userData && userData.user_id && userData.score && (
-          <Box userID={userData.user_id} userScore={userData.score as any} />
-        )}
+        {/* {userData && userData.user_id && userData.score && (
+          <Box userID={userData.user_id} userScore={userData.score as any} className="left-[4px] top-[4px] z-10"  />
+        )} */}
       </div>
       <div className="grid grid-cols-2 gap-1 w-full">
         {userData.score &&
@@ -65,7 +67,10 @@ function Me() {
               </div>
             </div>
           ))}
-        <div className="bg-greyBg w-full h-[189px] text-black relative flex flex-col justify-between items-center uppercase rounded-lg p-1">
+        <div
+          className="bg-greyBg w-full h-[189px] text-black relative flex flex-col justify-between items-center uppercase rounded-lg p-1 cursor-pointer hover:opacity-80"
+          onClick={() => goPage("/reTest")}
+        >
           <div className="w-full text-start">
             <a className="text-center tracking-[1.92px] text-xs">REDO TEST</a>
           </div>
