@@ -21,8 +21,7 @@ function Friends() {
               {/* <Box
                 userID={userData.user_id as number}
                 userScore={userData.score as any}
-                            className="left-[4px] top-[4px] z-10"
-
+                className="left-[4px] top-[4px] z-10"
               /> */}
               <a className="tracking-[1.92px] text-xs z-50">friend name</a>
             </div>
@@ -104,10 +103,10 @@ export default function Profile() {
   const [page, setPage] = useState<"me" | "friend">("me");
   const [loading, setLoading] = useState(false);
   const { goPage } = useContext(Context);
-  const backButton = useBackButton();
-  const onBackButtonClick = () => {
-    goPage("/");
-  };
+  // const backButton = useBackButton();
+  // const onBackButtonClick = () => {
+  //   goPage("/");
+  // };
   const { reFetchUserData } = useContext(Context);
   const updateUserScore = async (score: any, userID: number) => {
     setLoading(true);
@@ -125,15 +124,15 @@ export default function Profile() {
     }
   };
 
-  useEffect(() => {
-    backButton.show();
-    backButton.on("click", onBackButtonClick);
-    return () => {
-      backButton.off("click", onBackButtonClick);
-      backButton.hide();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   backButton.show();
+  //   backButton.on("click", onBackButtonClick);
+  //   return () => {
+  //     backButton.off("click", onBackButtonClick);
+  //     backButton.hide();
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <div className="relative w-full flex flex-col items-center gap-1 p-1 h-full">

@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { SDKProvider, DisplayGate, useThemeParams } from "@tma.js/sdk-react";
 
 interface SDKProviderErrorProps {
