@@ -4,12 +4,19 @@ import sample_2 from "@/assets/sample_2.png";
 import Image from "next/image";
 import { PiDotsNineBold } from "react-icons/pi";
 import { Context } from "@/components/Provider";
+import { tableMap } from "@/types/types";
+import { supabase } from "@/utils/supabase";
+import { useBackButton, useInitData } from "@tma.js/sdk-react";
 import Card from "@/components/Card";
+import GridDot from "@/components/ui/gridDot";
+import Box from "@/components/p5/Art";
+import { constants } from "buffer";
 
-export default function InitStory() {
+export default function Void() {
   type State = 1 | 2 | 3;
   const { goPage, userData } = useContext(Context);
   const [state, setState] = useState<State>(1);
+  console.log("userData", userData);
   const contentSection = useCallback(() => {
     if (state === 1) {
       return (

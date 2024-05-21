@@ -51,7 +51,7 @@ export default function ReTest() {
   const { userTG, reFetchUserData, goPage, userData } = useContext(Context);
   const backButton = useBackButton();
   const onBackButtonClick = () => {
-    goPage("profile");
+    goPage("/profile/MBTI");
   };
   const updateUserTestScore = async () => {
     setLoading(true);
@@ -101,16 +101,16 @@ export default function ReTest() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="relative w-full flex flex-col items-center justify-center gap-1 p-1 h-full min-h-[100dvh]">
-      <Card className="h-full flex flex-col items-start justify-start p-12 gap-4">
+    <div className="relative flex h-full min-h-[100dvh] w-full flex-col items-center justify-center gap-1 p-1">
+      <Card className="flex h-full flex-col items-start justify-start gap-4 p-12">
         <GridDot count={8} />
         <a className="flex-1 whitespace-pre-wrap">
           {question[questionIndex].title}
         </a>
-        <div className="flex flex-wrap flex-col w-10">
+        <div className="flex w-10 flex-col flex-wrap">
           <a className="text-xs">yourValue: {JSON.stringify(userValue)}</a>
         </div>
-        <div className="size-full relative h-[286px] z-50 rounded-md bg-white">
+        <div className="relative z-50 size-full h-[286px] rounded-md bg-white">
           {userData && userData.user_id && viewArt && (
             <Box
               userID={userData.user_id}
@@ -119,11 +119,11 @@ export default function ReTest() {
             />
           )}
         </div>
-        <a className="opacity-60 text-xs tracking-[1.92px]">{`${
+        <a className="text-xs tracking-[1.92px] opacity-60">{`${
           questionIndex + 1
         }/${question.length}`}</a>
       </Card>
-      <div className="flex flex-col gap-[10px] w-full p-12 bg-[#333]">
+      <div className="flex w-full flex-col gap-[10px] bg-[#333] p-12">
         <input
           type="range"
           min="0"
@@ -134,21 +134,21 @@ export default function ReTest() {
           //   }
           defaultValue={0.5}
           value={userValue}
-          className={`appearance-none relative rounded-lg bg-transparent h-12`}
+          className={`relative h-12 appearance-none rounded-lg bg-transparent`}
           onChange={(e) => handleChange(e)}
         />
         <div className="flex w-full justify-between">
-          <a className="text-xs tracking-[1.92px] opacity-60 text-white">
+          <a className="text-xs tracking-[1.92px] text-white opacity-60">
             {question[questionIndex].value[0]}
           </a>
-          <a className="text-xs tracking-[1.92px] opacity-60 text-white">
+          <a className="text-xs tracking-[1.92px] text-white opacity-60">
             {question[questionIndex].value[1]}
           </a>
         </div>
       </div>
-      <div className="w-full h-[62px]">
+      <div className="h-[62px] w-full">
         <button
-          className="text-[20px] flex items-center justify-center leading-[150%] border w-full h-full rounded-md hover:border-white/20 bg-white hover:bg-white/80 text-blackBg tracking-[3.2px]"
+          className="flex h-full w-full items-center justify-center rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
           onClick={
             questionIndex === question.length - 1
               ? () => handleSubmit()

@@ -1,8 +1,14 @@
 interface DotProps {
   count: number;
+  size?: "big" | "small";
+  color?: "black" | "white";
 }
 
-export default function GridDot({ count }: DotProps) {
+export default function GridDot({
+  count,
+  size = "small",
+  color = "black",
+}: DotProps) {
   const dots: boolean[] = Array(16).fill(false);
 
   if (count >= 1 && count <= 8) {
@@ -19,12 +25,20 @@ export default function GridDot({ count }: DotProps) {
   }
 
   return (
-    <div className="size-[14px] grid grid-cols-4 gap-[2px]">
+    <div
+      className={`grid ${size === "small" ? "size-[14px]" : "size-[56px]"} grid-cols-4 gap-[2px]`}
+    >
       {dots.map((isColored, index) => (
         <div
           key={index}
-          className={`size-[2px] rounded-[0.4px] ${
-            isColored ? "bg-blackBg" : "bg-blackBg/20"
+          className={`${size === "small" ? "size-[2px]" : "size-[8px]"} rounded-[0.4px] ${
+            color === "black"
+              ? isColored
+                ? "bg-blackBg"
+                : "bg-blackBg/20"
+              : isColored
+                ? "bg-white"
+                : "bg-white/20"
           }`}
         />
       ))}
