@@ -41,7 +41,7 @@ const question = [
     value: ["Past", "Future"],
   },
 ];
-export default function ReTest() {
+export default function Decode() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [viewArt, setViewArt] = useState(false);
   const [testScore, setTestScore] = useState<number>(0);
@@ -51,7 +51,7 @@ export default function ReTest() {
   const { userTG, reFetchUserData, goPage, userData } = useContext(Context);
   const backButton = useBackButton();
   const onBackButtonClick = () => {
-    goPage("/profile/MBTI");
+    goPage("/");
   };
   const updateUserTestScore = async () => {
     setLoading(true);
@@ -111,13 +111,13 @@ export default function ReTest() {
           <a className="text-xs">yourValue: {JSON.stringify(userValue)}</a>
         </div>
         <div className="relative z-50 size-full h-[286px] rounded-md bg-white">
-          {userData && userData.user_id && viewArt && (
+          {/* {userData && userData.user_id && viewArt && (
             <Box
               userID={userData.user_id}
               userScore={score}
               fullScreen={true}
             />
-          )}
+          )} */}
         </div>
         <a className="text-xs tracking-[1.92px] opacity-60">{`${
           questionIndex + 1

@@ -28,7 +28,7 @@ export default function Home() {
       content: userData?.testScore ? Math.ceil(userData.testScore) : "?",
       left: "%",
       right: "DECODED",
-      onClick: () => goPage("/myPersonality"),
+      onClick: () => goPage("/decode"),
     },
     {
       title: "THE VOID",
@@ -49,7 +49,7 @@ export default function Home() {
       content: "!",
       left: "REWARDS",
       right: "AWAIT",
-      onClick: () => goPage("/myPersonality"),
+      onClick: () => goPage("/exchange"),
     },
   ];
 
@@ -106,7 +106,7 @@ export default function Home() {
     );
   }
   return (
-    <div className="relative z-20 flex h-full w-full flex-col items-center gap-1">
+    <div className="relative z-20 flex h-full w-full flex-col items-center gap-1 bg-black">
       <div className="absolute z-20 flex h-24 w-full items-center justify-between bg-transparent px-6 text-[20px] tracking-[3.2px] text-white">
         <ProfileTab />
       </div>

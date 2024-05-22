@@ -35,6 +35,7 @@ export const Context = createContext<{
     ton_address: "",
     inviteFrom_id: null,
     testScore: null,
+    friends: [],
   },
   reFetchUserData: () => {},
 });
@@ -64,6 +65,7 @@ export const Provider = ({ children }: { children: any }) => {
     ton_address: "",
     inviteFrom_id: null,
     testScore: null,
+    friends: [],
   });
   const [reGetUserData, setReGetUserData] = useState(false);
   const router = useRouter();
@@ -76,6 +78,7 @@ export const Provider = ({ children }: { children: any }) => {
     if (!initData) {
       return <></>;
     }
+    console.log("initData", initData);
     const { user } = initData;
     setUserTG(user as UserTG);
   }, [initData]);

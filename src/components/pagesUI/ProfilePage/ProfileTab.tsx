@@ -18,9 +18,11 @@ export default function ProfileTab() {
       </button>
       <button
         className={`flex h-full w-full items-center justify-center hover:text-white ${
-          router.pathname === "/profile/friend" ? "text-white" : "text-white/40"
+          router.pathname === "/profile/friends"
+            ? "text-white"
+            : "text-white/40"
         }`}
-        onClick={() => goPage("/profile/friend")}
+        onClick={() => goPage("/profile/friends")}
       >
         FRIENDS
       </button>

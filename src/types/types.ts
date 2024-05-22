@@ -30,6 +30,7 @@ export type UserData = {
   ton_address: string;
   inviteFrom_id: number | null;
   testScore: number | null;
+  friends: Array<number>;
 };
 export type UserTG = {
   allowsWriteToPm: boolean;

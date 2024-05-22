@@ -58,7 +58,7 @@ export default function Home() {
 
   return (
     <div className="relative z-20 flex h-full w-full flex-col items-center gap-1 bg-[#333]">
-      <div className="absolute z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-[20px] tracking-[3.2px] text-white">
+      <div className="z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-[20px] tracking-[3.2px] text-white">
         <FaArrowLeftLong
           size={20}
           onClick={() => goPage("/")}
@@ -67,7 +67,7 @@ export default function Home() {
         <a className="absolute left-1/2 -translate-x-[48%]">MY SYNTAX</a>
         <FaShareSquare size={20} />
       </div>
-      <div className="relative h-[400px] w-full rounded-lg uppercase">
+      <div className="relative h-[382px] w-full rounded-lg uppercase">
         {/* {userData && userData.user_id && userData.score && (
             <Box
               userID={userData.user_id}
@@ -102,7 +102,7 @@ export default function Home() {
             </div>
           ))}
         <div
-          onClick={() => goPage("/reTest")}
+          onClick={() => goPage("/test")}
           className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase hover:opacity-80"
         >
           <div className="w-full text-start">

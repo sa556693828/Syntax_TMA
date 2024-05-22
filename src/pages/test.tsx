@@ -70,7 +70,7 @@ export default function Test() {
   };
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     let newScore = [...score];
     newScore[index] = parseFloat(event.target.value);
@@ -78,7 +78,7 @@ export default function Test() {
   };
   const handleSubmit = async () => {
     await updateUserScore(score, userTG?.id as number);
-    goPage("/art");
+    goPage("/");
   };
   useEffect(() => {
     backButton.show();
@@ -91,15 +91,15 @@ export default function Test() {
   }, []);
 
   return (
-    <div className="relative w-full flex flex-col items-center justify-center gap-1 p-1 h-[100dvh]">
-      <Card className="h-full flex flex-col items-start justify-start p-12 gap-4">
+    <div className="relative flex h-[100dvh] w-full flex-col items-center justify-center gap-1 p-1">
+      <Card className="flex h-full flex-col items-start justify-start gap-4 p-12">
         <GridDot count={questionIndex + 1} />
         <a className="flex-1">{question[questionIndex].title}</a>
-        <a className="opacity-60 text-xs tracking-[1.92px]">{`${
+        <a className="text-xs tracking-[1.92px] opacity-60">{`${
           questionIndex + 1
         }/${question.length}`}</a>
       </Card>
-      <div className="flex flex-col gap-[10px] w-full p-12 bg-[#333]">
+      <div className="flex w-full flex-col gap-[10px] bg-[#333] p-12">
         <input
           type="range"
           min="0"
@@ -114,21 +114,21 @@ export default function Test() {
               : score[questionIndex]
           }
           value={score[questionIndex]}
-          className={`appearance-none relative rounded-lg bg-transparent h-12`}
+          className={`relative h-12 appearance-none rounded-lg bg-transparent`}
           onChange={(e) => handleChange(e, questionIndex)}
         />
         <div className="flex w-full justify-between">
-          <a className="text-xs tracking-[1.92px] opacity-60 text-white">
+          <a className="text-xs tracking-[1.92px] text-white opacity-60">
             {question[questionIndex].value[0]}
           </a>
-          <a className="text-xs tracking-[1.92px] opacity-60 text-white">
+          <a className="text-xs tracking-[1.92px] text-white opacity-60">
             {question[questionIndex].value[1]}
           </a>
         </div>
       </div>
-      <div className="w-full h-[62px]">
+      <div className="h-[62px] w-full">
         <button
-          className="text-[20px] flex items-center justify-center leading-[150%] border w-full h-full rounded-md hover:border-white/20 bg-white hover:bg-white/80 text-blackBg tracking-[3.2px]"
+          className="flex h-full w-full items-center justify-center rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
           onClick={
             questionIndex === question.length - 1
               ? () => handleSubmit()

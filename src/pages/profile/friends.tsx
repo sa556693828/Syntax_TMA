@@ -3,18 +3,29 @@ import { Context } from "@/components/Provider";
 import { tableMap } from "@/types/types";
 import { supabase } from "@/utils/supabase";
 import { useBackButton } from "@tma.js/sdk-react";
-import Card from "@/components/Card";
-import GridDot from "@/components/ui/gridDot";
-import Box from "@/components/p5/Art";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import { FaShareSquare } from "react-icons/fa";
 import ProfileTab from "@/components/pagesUI/ProfilePage/ProfileTab";
 
 export default function Friends() {
-  const { userData } = useContext(Context);
+  const { userData, userTG, reFetchUserData } = useContext(Context);
+  const [loading, setLoading] = useState(false);
+  const updateUserFriends = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from(tableMap.users)
+        .update({ friends: [] })
+        .eq("user_id", userTG?.id as number);
+      if (error) throw error;
+      reFetchUserData();
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
-      <div className="absolute z-20 flex h-24 w-full items-center justify-between bg-transparent px-6 text-[20px] tracking-[3.2px] text-white">
+      <div className="z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-[20px] tracking-[3.2px] text-white">
         <ProfileTab />
       </div>
 
@@ -33,7 +44,10 @@ export default function Friends() {
               <a className="z-50 text-xs tracking-[1.92px]">friend name</a>
             </div>
           ))}
-        <div className="relative flex h-[189px] w-full flex-col items-center justify-end rounded-lg bg-greyBg p-1 uppercase text-black">
+        <div
+          className="relative flex h-[189px] w-full flex-col items-center justify-end rounded-lg bg-white p-1 uppercase text-black"
+          // onClick={()=>}
+        >
           <div className="w-full text-start">
             <a className="text-center text-xs tracking-[1.92px]">ADD FRIEND</a>
           </div>
