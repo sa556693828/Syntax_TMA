@@ -13,6 +13,7 @@
     "@tma.js/sdk": "^1.5.0",
     "@tma.js/sdk-react": "^1.1.0",
     "@tonconnect/ui-react": "^2.0.0",
+    "axios": "^1.7.2",
     "eruda": "^3.0.1",
     "next": "14.2.1",
     "p5": "^1.9.2",

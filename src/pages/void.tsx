@@ -11,67 +11,81 @@ import Card from "@/components/Card";
 import GridDot from "@/components/ui/gridDot";
 import Box from "@/components/p5/Art";
 import { constants } from "buffer";
+import axios from "axios";
+
+interface Prompt {
+  model: string;
+  prompt: string;
+  stream: boolean;
+}
 
 export default function Void() {
-  type State = 1 | 2 | 3;
   const { goPage, userData } = useContext(Context);
-  const [state, setState] = useState<State>(1);
-  console.log("userData", userData);
-  const contentSection = useCallback(() => {
-    if (state === 1) {
-      return (
-        <a className="tracking-[2.56x]">
-          {`HI THERE! WELCOME TO SYNTAX. I’VE BEEN EXPLORING NEW WAYS TO CONVEY WHO WE ARE IN MEANINGFUL, INTIMATE WAYS WHILE KEEPING PRIVACY INTACT.`}
-        </a>
+  const backButton = useBackButton();
+  const onBackButtonClick = () => {
+    goPage("/");
+  };
+
+  const [answer, setAnswer] = useState<string>("");
+  const [prompt, setPrompt] = useState<Prompt>({
+    model: "phi3",
+    prompt: "",
+    stream: false,
+  });
+
+  const aiAPI = async () => {
+    try {
+      const response = await axios.post(
+        "https://api.openai.com/v1/engines/davinci-codex/completions",
+        prompt,
+        // {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // },
       );
-    } else if (state === 2) {
-      return (
-        <>
-          <a className="tracking-[2.56x]">
-            {`WITHOUT GETTING ALL PHILOSOPHICAL, HERE’S AN EXAMPLE OF WHAT YOU CAN MAKE USING THIS BOT:`}
-          </a>
-          <Image
-            src={sample_2.src}
-            alt="sample_2"
-            className="size-[286px] rounded-lg"
-            width={286}
-            height={286}
-          />
-        </>
-      );
-    } else {
-      return (
-        <a className="tracking-[2.56x]">
-          AN IDENTITY WITH NO FACES, NO NAMES, NO JOB TITLES; JUST YOUR ESSENCE
-          VISUALIZED IN A NEW SYNTAX.
-        </a>
-      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
     }
-  }, [state]);
+  };
+  useEffect(() => {
+    backButton.show();
+    backButton.on("click", onBackButtonClick);
+    return () => {
+      backButton.off("click", onBackButtonClick);
+      backButton.hide();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex h-[100vh] w-full flex-col items-center justify-between gap-1 p-1">
-      <Card className="flex h-full items-center justify-center px-12 py-4">
-        <div className="flex flex-col gap-4">
-          <PiDotsNineBold />
-          {contentSection()}
-          <a className="text-xs tracking-[1.92px] opacity-60">{`${state}/3`}</a>
+      {answer ? (
+        <div className="flex flex-col items-center justify-center gap-1">
+          <h1 className="text-2xl font-bold">Answer</h1>
+          <p>{answer}</p>
         </div>
-      </Card>
-
-      <div className="h-[62px] w-full">
-        <button
-          className="h-full w-full rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
-          onClick={
-            state === 3
-              ? () => goPage("/test")
-              : () => setState((prev: any) => prev + 1)
-          }
-        >
-          {/* {state === 1 ? "AND...?" : state === 2 ? "HUH.." : "CREATE MY SYNTAX"} */}
-          {state === 3 ? "LET’S GET STARTED" : "NEXT"}
-        </button>
-      </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-1">
+          <h1 className="text-2xl font-bold">Prompt</h1>
+          <textarea
+            className="h-48 w-full rounded-lg border border-gray-300 p-2"
+            value={prompt.prompt}
+            onChange={(e) => setPrompt({ ...prompt, prompt: e.target.value })}
+          />
+          <button
+            className="mt-2 rounded-lg border border-white px-6 py-2 text-white"
+            onClick={async () => {
+              const response = await aiAPI();
+              setAnswer(response.choices[0].text);
+            }}
+          >
+            Submit
+          </button>
+        </div>
+      )}
     </div>
   );
 }
