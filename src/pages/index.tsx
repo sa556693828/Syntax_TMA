@@ -124,8 +124,10 @@ export default function Home() {
           />
         )}
         <div className="absolute -bottom-8 flex w-full items-end justify-between px-4 text-white">
-          <a className="text-[80px] leading-none">10</a>
-          <a className="pb-2 text-xs leading-none tracking-[1.92px]">syntkns</a>
+          <a className="z-20 text-[80px] leading-none">10</a>
+          <a className="z-20 pb-2 text-xs leading-none tracking-[1.92px]">
+            syntkns
+          </a>
         </div>
       </div>
       <div className="mt-20 grid w-full grid-cols-2 gap-1">

@@ -7,9 +7,10 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { FaShareSquare } from "react-icons/fa";
 import { supabase } from "@/utils/supabase";
 import { tableMap, UserData } from "@/types/types";
+import Box from "@/components/p5/Art";
 
 export default function MBTI() {
-  const { goPage } = useContext(Context);
+  const { goPage, userData } = useContext(Context);
   const router = useRouter();
   const id = router.query.id;
   const [targetUserData, setTargetUserData] = useState<UserData>();
@@ -92,13 +93,13 @@ export default function MBTI() {
         <FaShareSquare size={20} />
       </div>
       <div className="relative h-[382px] w-full rounded-lg uppercase">
-        {/* {userData && userData.user_id && userData.score && (
-            <Box
-              userID={userData.user_id}
-              fullScreen={true}
-              userScore={userData.score as any}
-            />
-          )} */}
+        {userData && userData.user_id && userData.score && (
+          <Box
+            userID={userData.user_id}
+            fullScreen={true}
+            userScore={userData.score as any}
+          />
+        )}
       </div>
       <div className="grid w-full grid-cols-2 gap-1">
         {targetUserData &&
