@@ -14,14 +14,14 @@ export default function InitStory() {
     if (state === 1) {
       return (
         <a className="tracking-[2.56x]">
-          {`HI THERE! WELCOME TO SYNTAX. I’VE BEEN EXPLORING NEW WAYS TO CONVEY WHO WE ARE IN MEANINGFUL, INTIMATE WAYS WHILE KEEPING PRIVACY INTACT.`}
+          {`HI THERE! WELCOME TO “SYNTAX”. I’VE BEEN EXPLORING NEW WAYS TO CONVEY WHO WE ARE IN MEANINGFUL, INTIMATE WAYS WHILE KEEPING OUR PERSONAL INFORMATION SAFE.`}
         </a>
       );
     } else if (state === 2) {
       return (
         <>
           <a className="tracking-[2.56x]">
-            {`WITHOUT GETTING ALL PHILOSOPHICAL, HERE’S AN EXAMPLE OF WHAT YOU CAN MAKE USING THIS BOT:`}
+            {`WITHOUT GETTING ALL PHILOSOPHICAL (YET), HERE’S AN EXAMPLE OF WHAT YOU CAN MAKE USING THIS BOT:`}
           </a>
           <Image
             src={sample_2.src}
@@ -34,9 +34,8 @@ export default function InitStory() {
       );
     } else {
       return (
-        <a className="tracking-[2.56x]">
-          AN IDENTITY WITH NO FACES, NO NAMES, NO JOB TITLES; JUST YOUR ESSENCE
-          VISUALIZED IN A NEW SYNTAX.
+        <a className="tracking-[2.2px]">
+          {`AN IDENTITY WITH NO FACES, NO NAMES, NO JOB TITLES; JUST YOUR ESSENCE VISUALIZED IN A NEW SYNTAX.`}
         </a>
       );
     }

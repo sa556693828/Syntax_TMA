@@ -43,6 +43,7 @@ input[type="range"] {
   appearance: none;
   cursor: pointer;
   border-radius: 3px;
+  width: 100%;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
@@ -53,13 +54,15 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  background-color: #f4f4f4;
+  background-color: transparent;
   width: 16px;
-  height: 20px;
-  border-radius: 3px;
+  height: 40px;
+  border-radius: 2px;
+  z-index: 20;
   appearance: none;
-  margin: -8px 0 0 0;
+  margin: -26px 0 0 0;
   position: relative;
+  box-shadow: none;
 }
 
 .loader {

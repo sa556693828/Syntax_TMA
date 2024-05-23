@@ -111,32 +111,38 @@ export default function Decode() {
           <a className="text-xs">yourValue: {JSON.stringify(userValue)}</a>
         </div>
         <div className="relative z-50 size-full h-[286px] rounded-md bg-white">
-          {/* {userData && userData.user_id && viewArt && (
+          {userData && userData.user_id && viewArt && (
             <Box
               userID={userData.user_id}
               userScore={score}
               fullScreen={true}
             />
-          )} */}
+          )}
         </div>
-        <a className="text-xs tracking-[1.92px] opacity-60">{`${
-          questionIndex + 1
-        }/${question.length}`}</a>
       </Card>
       <div className="flex w-full flex-col gap-[10px] bg-[#333] p-12">
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.0001"
-          //   value={
-          //     userData.score !== null ? userData.score[index] : score[index]
-          //   }
-          defaultValue={0.5}
-          value={userValue}
-          className={`relative h-12 appearance-none rounded-lg bg-transparent`}
-          onChange={(e) => handleChange(e)}
-        />
+        <div className="relative w-full">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.0001"
+            defaultValue={0.5}
+            value={userValue}
+            className={`relative h-12 appearance-none rounded-lg bg-transparent`}
+            onChange={(e) => handleChange(e)}
+          />
+          <div
+            className={`pointer-events-none absolute -top-[10px] flex flex-col ${Math.round(userValue * 100) === 100 ? "items-end" : "items-center"} left-[${Math.round(userValue * 100)}%] -translate-x-[${Math.round(userValue * 100)}%] text-white `}
+          >
+            <a
+              className={`${Math.round(userValue * 100) === 100 ? "-mr-1" : Math.round(userValue * 100) === 0 ? "-ml-[2px]" : ""}`}
+            >
+              {Math.round(userValue * 100)}
+            </a>
+            <div className="h-[2px] w-4 rounded bg-white" />
+          </div>
+        </div>
         <div className="flex w-full justify-between">
           <a className="text-xs tracking-[1.92px] text-white opacity-60">
             {question[questionIndex].value[0]}

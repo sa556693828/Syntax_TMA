@@ -5,55 +5,12 @@ import GridDot from "@/components/ui/gridDot";
 import { useBackButton, useMainButton, useViewport } from "@tma.js/sdk-react";
 import { useContext, useEffect, useState } from "react";
 
-interface ArtProps {
-  userID: string;
-  userScore: Array<number>;
-}
-
 export default function Art() {
   const backButton = useBackButton();
   const mainButton = useMainButton();
   const { userData, goPage } = useContext(Context);
   const [revealed, setRevealed] = useState(false);
 
-  const onBackButtonClick = () => {
-    goPage("/");
-  };
-
-  useEffect(() => {
-    backButton.show();
-    backButton.on("click", onBackButtonClick);
-    return () => {
-      backButton.off("click", onBackButtonClick);
-      backButton.hide();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // useEffect(() => {
-  //   mainButton.enable().show();
-  //   return () => {
-  //     mainButton.hide();
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   const onMainButtonClick = () => {
-  //     if (state === 3) {
-  //       goPage("/test");
-  //     } else {
-  //       setState((prev: any) => prev + 1);
-  //     }
-  //   };
-  //   mainButton.setBackgroundColor("#FFFFFF");
-  //   mainButton.setTextColor("#000000");
-
-  //   mainButton.on("click", onMainButtonClick);
-
-  //   return () => {
-  //     mainButton.off("click", onMainButtonClick);
-  //   };
-  // }, [mainButton, state]);
   useEffect(() => {
     setTimeout(() => {
       setRevealed(true);
@@ -61,8 +18,8 @@ export default function Art() {
   }, []);
 
   return (
-    <div className="w-full relative p-1 h-full flex items-center justify-between flex-col gap-1">
-      <div className="bg-[#333] w-full relative p-1 uppercase rounded-lg h-[374px]">
+    <div className="relative flex h-full w-full flex-col items-center justify-between gap-1 p-1">
+      <div className="relative h-[382px] w-full rounded-lg bg-[#333] p-1 uppercase">
         {userData && userData.user_id && userData.score && (
           <Box
             userID={userData.user_id}
@@ -71,27 +28,53 @@ export default function Art() {
           />
         )}
       </div>
-      <Card className="flex flex-col items-start justify-start p-12 gap-4">
+      <Card className="flex flex-col items-start justify-start gap-4 p-12">
         <GridDot count={8} />
-        <a className="tracking-[2.56px] text-base">{`THIS IS MY INTERPRETATION OF YOUR SYNTAX AS BEING:`}</a>
-        <a className="tracking-[2.56px] text-base">
-          {`BALANCED INTROVERTED/EXTRAVERTED`}
-          {`VERY INTUITIVE`}
-          {`EXTREMELY INCLINED TOWARDS THINKING`}
-          {`SOMEWHAT LEANING TOWARDS JUDGING`}
-          {`EXTREMELY SHAPED BY NURTURE`}
-          {`BALANCED PREFERRING STABILITY/SEEKING CHANGE`}
-          {`SOMEWHAT PESSIMISTIC`}
-          {`VERY FUTURE-ORIENTED`}
-        </a>
+        {/* TODO:確認內容 STATE 一個一個出來 */}
+        <a className="text-base tracking-[2.56px]">{`THIS IS MY INTERPRETATION OF YOUR SYNTAX AS SOMEONE WHO IS A TAD INTROVERTED, PRETTY INTUITIVE, VERY RATIONAL, SOMEWHAT JUDGING, ENVIRONMENT-NURTURED, A TAD CHANGE SEEKING, PESSIMISTIC, AND FUTURE-ORIENTED.`}</a>
       </Card>
-      <div className="w-full h-[62px]">
-        <button
-          className="text-[20px] leading-[150%] border w-full h-full rounded-md hover:border-white/20 bg-white hover:bg-white/80 text-blackBg tracking-[3.2px]"
-          onClick={() => goPage("/profile")}
-        >
-          {"NOW WHAT?"}
-        </button>
+      <Card className="flex flex-col items-start justify-start gap-4 p-12">
+        <GridDot count={8} />
+        <a className="text-base tracking-[2.4px]">{`THROUGH THE SAME SYNTAX, THIS IS HOW I WOULD HAVE SEEN YOU AS AN EXTRAVERT:`}</a>
+      </Card>
+      <div className="relative h-[382px] w-full rounded-lg bg-[#333] p-1 uppercase">
+        {userData && userData.user_id && userData.score && (
+          <Box
+            userID={userData.user_id}
+            userScore={userData.score as any}
+            className="left-[4px] top-[4px] z-10"
+          />
+        )}
+      </div>
+      <Card className="flex flex-col items-start justify-start gap-4 p-12">
+        <GridDot count={8} />
+        <a className="text-base tracking-[2.4px]">{`AND THIS IS HOW I WOULD HAVE SEEN YOU AS SOMEONE EMOTIONAL:`}</a>
+      </Card>
+      <div className="w-full space-y-1">
+        <div className="h-[62px] w-full">
+          <button
+            className="h-full w-full rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+            onClick={() => goPage("/")}
+          >
+            {"HOW DOES THIS WORK?"}
+          </button>
+        </div>
+        <div className="h-[62px] w-full">
+          <button
+            className="h-full w-full rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+            onClick={() => goPage("/")}
+          >
+            {"WHY DID YOU DO THIS?"}
+          </button>
+        </div>
+        <div className="h-[62px] w-full">
+          <button
+            className="h-full w-full rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+            onClick={() => goPage("/")}
+          >
+            {"WHAT ELSE IS THERE?"}
+          </button>
+        </div>
       </div>
     </div>
   );

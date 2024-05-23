@@ -78,10 +78,10 @@ export const Provider = ({ children }: { children: any }) => {
     if (!initData) {
       return <></>;
     }
-    console.log("initData", initData);
     const { user } = initData;
     setUserTG(user as UserTG);
   }, [initData]);
+
   const reFetchUserData = () => {
     setReGetUserData(!reGetUserData);
   };
@@ -98,6 +98,29 @@ export const Provider = ({ children }: { children: any }) => {
     }
     if (userTG) getUser();
   }, [userTG, reGetUserData]);
+
+  useEffect(() => {
+    async function addFriend() {
+      if (
+        !initData ||
+        !initData.startParam ||
+        !userData ||
+        userData.user_id === null
+      )
+        return;
+      //TODO:防呆 先確定有該使用者
+      const friends = userData.friends || [];
+      const isExist = friends.includes(Number(initData.startParam));
+      const isSelf = userData.user_id === Number(initData.startParam);
+      if (isExist || isSelf) return;
+      await supabase
+        .from(tableMap.users)
+        .update({ friends: [...friends, Number(initData.startParam)] })
+        .eq("user_id", userTG?.id);
+    }
+    if (initData && initData.startParam && userData && userData.user_id)
+      addFriend();
+  }, [initData, userData]);
 
   return (
     <Context.Provider

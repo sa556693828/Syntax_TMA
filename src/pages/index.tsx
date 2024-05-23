@@ -6,6 +6,7 @@ import { useInitData } from "@tma.js/sdk-react";
 import { supabase } from "@/utils/supabase";
 import { tableMap, UserData } from "@/types/types";
 import ProfileTab from "@/components/pagesUI/ProfilePage/ProfileTab";
+import Box from "@/components/p5/Art";
 
 interface MeFunction {
   title: string;
@@ -81,21 +82,25 @@ export default function Home() {
     if (userTG) getUser();
   }, [userTG]);
   useEffect(() => {
+    if (userTG && userData && userData.score === null) {
+      router.push("/initStory");
+    }
+  }, [userData, userTG, userData?.score]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoadingTime(true);
+    }, 1000);
+    return () => {
+      setLoadingTime(false);
+    };
+  }, []);
+  useEffect(() => {
     if (typeof window !== "undefined") {
       import("eruda").then((module) => {
         module.default.init();
       });
     }
-  }, []);
-  useEffect(() => {
-    if (userTG && userData && userData.score && userData.score.length === 0) {
-      router.push("/initStory");
-    }
-  }, [userData, userTG]);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoadingTime(true);
-    }, 1000);
   }, []);
 
   if (!userData || !userData.score || !loadingTime) {
@@ -111,13 +116,13 @@ export default function Home() {
         <ProfileTab />
       </div>
       <div className="relative h-[400px] w-full rounded-lg uppercase">
-        {/* {userData && userData.user_id && userData.score && (
-            <Box
-              userID={userData.user_id}
-              fullScreen={true}
-              userScore={userData.score as any}
-            />
-          )} */}
+        {userData && userData.user_id && userData.score && (
+          <Box
+            userID={userData.user_id}
+            fullScreen={true}
+            userScore={userData.score as any}
+          />
+        )}
         <div className="absolute -bottom-8 flex w-full items-end justify-between px-4 text-white">
           <a className="text-[80px] leading-none">10</a>
           <a className="pb-2 text-xs leading-none tracking-[1.92px]">syntkns</a>
@@ -126,7 +131,7 @@ export default function Home() {
       <div className="mt-20 grid w-full grid-cols-2 gap-1">
         <div
           className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase hover:opacity-80"
-          onClick={() => goPage("/profile/MBTI")}
+          onClick={() => goPage(`/profile/${userData.user_id}/MBTI`)}
         >
           <div className="w-full text-start">
             <a className="text-center text-xs tracking-[1.92px]">My SYNTAX</a>
@@ -141,7 +146,7 @@ export default function Home() {
           <div
             key={index}
             onClick={func.onClick}
-            className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase hover:opacity-80"
+            className="relative flex h-[189px] w-full cursor-pointer flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase hover:opacity-80"
           >
             <div className="w-full text-start">
               <a className="text-center text-xs tracking-[1.92px]">
