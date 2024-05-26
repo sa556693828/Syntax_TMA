@@ -5,7 +5,6 @@ import { supabase } from "@/utils/supabase";
 import { useBackButton } from "@tma.js/sdk-react";
 import Card from "@/components/Card";
 import GridDot from "@/components/ui/gridDot";
-import { PiDotsNineBold } from "react-icons/pi";
 const question = [
   {
     title: "DO YOU RECHARGE BY BEING ALONE OR INTERACTING WITH OTHERS?",

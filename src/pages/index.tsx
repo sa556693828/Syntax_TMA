@@ -20,7 +20,6 @@ export default function Home() {
   const initData = useInitData();
   const { user: userTG } = initData as any;
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [loading, setLoading] = useState(false);
   const [loadingTime, setLoadingTime] = useState(false);
   const { goPage, reFetchUserData } = useContext(Context);
   const meFunction: MeFunction[] = [
@@ -53,22 +52,6 @@ export default function Home() {
       onClick: () => goPage("/exchange"),
     },
   ];
-
-  const updateUserScore = async (score: any, userID: number) => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from(tableMap.users)
-        .update({ score: score })
-        .eq("user_id", userID);
-      if (error) throw error;
-      reFetchUserData();
-    } catch (error) {
-      console.log("error", error);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
     async function getUser() {
       const { data: user } = await supabase

@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Provider } from "@/components/Provider";
 import Layout from "@/components/Layout/Layout";
 import { TmaSDKLoader } from "@/components/TmaSDKLoader";
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,15 +16,20 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       {/* TODO: 改成自己的 */}
-      {/* <TonConnectUIProvider manifestUrl="https://ton-connect.github.io/demo-dapp-with-react-ui/tonconnect-manifest.json"> */}
-      <TmaSDKLoader>
-        <Provider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </Provider>
-      </TmaSDKLoader>
-      {/* </TonConnectUIProvider> */}
+      <TonConnectUIProvider
+        manifestUrl="https://syntax-tma.vercel.app/tonconnect-manifest.json"
+        actionsConfiguration={{
+          twaReturnUrl: "https://t.me/DEC42_Syntax_BOT/MBTI",
+        }}
+      >
+        <TmaSDKLoader>
+          <Provider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </Provider>
+        </TmaSDKLoader>
+      </TonConnectUIProvider>
     </>
   );
 }
