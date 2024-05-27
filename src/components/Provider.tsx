@@ -1,14 +1,22 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useInitData } from "@tma.js/sdk-react";
-import { tableMap, UserData, UserTG } from "@/types/types";
+import {
+  EventType,
+  EventEnum,
+  tableMap,
+  UserData,
+  UserTG,
+} from "@/types/types";
 import { supabase } from "@/utils/supabase";
+import { pointList } from "@/constants/pointList";
 
 export const Context = createContext<{
   goPage: (page: any) => void;
   userTG: UserTG;
   userData: UserData;
   reFetchUserData: () => void;
+  updateUserToken: (userId: number, event: EventType) => void;
 }>({
   goPage: () => {},
   userTG: {
@@ -36,8 +44,10 @@ export const Context = createContext<{
     inviteFrom_id: null,
     testScore: null,
     friends: [],
+    tokens: null,
   },
   reFetchUserData: () => {},
+  updateUserToken: () => {},
 });
 
 export const Provider = ({ children }: { children: any }) => {
@@ -66,6 +76,7 @@ export const Provider = ({ children }: { children: any }) => {
     inviteFrom_id: null,
     testScore: null,
     friends: [],
+    tokens: null,
   });
   const [reGetUserData, setReGetUserData] = useState(false);
   const router = useRouter();
@@ -84,6 +95,25 @@ export const Provider = ({ children }: { children: any }) => {
 
   const reFetchUserData = () => {
     setReGetUserData(!reGetUserData);
+  };
+  const updateUserToken = async (userId: number, event: EventType) => {
+    const addPoint = pointList[event];
+    if (!addPoint || !userData) return;
+    const totalPoint = userData.tokens ? userData.tokens + addPoint : addPoint;
+    try {
+      const { error } = await supabase
+        .from(tableMap.users)
+        .update({ tokens: totalPoint })
+        .eq("user_id", userId);
+      if (!error) {
+        reFetchUserData();
+      } else {
+        console.log("updateUserToken fail");
+        throw new Error("updateUserToken fail");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -108,15 +138,25 @@ export const Provider = ({ children }: { children: any }) => {
         userData.user_id === null
       )
         return;
-      //TODO:防呆 先確定有該使用者
+      const targetUser = Number(initData.startParam);
       const friends = userData.friends || [];
-      const isExist = friends.includes(Number(initData.startParam));
-      const isSelf = userData.user_id === Number(initData.startParam);
-      if (isExist || isSelf) return;
+      //TODO: 顯示你和他已經是朋友
+      const isAlreadyExist = friends.includes(targetUser);
+      const isSelf = userData.user_id === targetUser;
+      const { data: user } = await supabase
+        .from(tableMap.users)
+        .select("*")
+        .eq("user_id", targetUser);
+      if (!user || user.length === 0 || isAlreadyExist || isSelf) return;
       await supabase
         .from(tableMap.users)
-        .update({ friends: [...friends, Number(initData.startParam)] })
+        .update({ friends: [...friends, targetUser] })
         .eq("user_id", userTG?.id);
+      await supabase
+        .from(tableMap.users)
+        .update({ friends: [...friends, userTG?.id] })
+        .eq("user_id", targetUser);
+      updateUserToken(targetUser, EventEnum.inviteFriends);
     }
     if (initData && initData.startParam && userData && userData.user_id)
       addFriend();
@@ -129,6 +169,7 @@ export const Provider = ({ children }: { children: any }) => {
         userTG,
         userData,
         reFetchUserData,
+        updateUserToken,
       }}
     >
       {children}

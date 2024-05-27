@@ -3,11 +3,19 @@ interface Props {
   userID: number;
   userScore: number[];
   fullScreen?: boolean;
+  overScreen?: boolean;
   className?: string;
 }
 
-const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
+const Box = ({
+  userID,
+  userScore,
+  fullScreen = false,
+  overScreen = false,
+  className,
+}: Props) => {
   const canvasRef = useRef<HTMLDivElement>(null);
+  const p5InstanceRef = useRef<any>(null); // Reference to store the p5 instance
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -22,6 +30,7 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
           let parts: any = [];
           let icles: any;
           let ff: any;
+
           class Core {
             para: number[];
             sldr: number[];
@@ -50,7 +59,7 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
               p.push();
               p.translate(
                 p.width / 2 - this.para[0] * 1.5,
-                p.height / 2 - this.para[0] * 1.5
+                p.height / 2 - this.para[0] * 1.5,
               );
 
               p.fill(255);
@@ -81,7 +90,7 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
                 p.ellipse(
                   this.x,
                   this.y,
-                  p.map(this.sldr[0], 0, 1, 800, 600) + p.random(-1200, 1200)
+                  p.map(this.sldr[0], 0, 1, 800, 600) + p.random(-1200, 1200),
                 );
               }
               p.pop();
@@ -91,7 +100,7 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
               p.push();
               p.translate(
                 p.width / 2 - this.para[0] * 1.5,
-                p.height / 2 - this.para[0] * 1.5
+                p.height / 2 - this.para[0] * 1.5,
               );
               p.translate(this.x, this.y);
 
@@ -198,7 +207,7 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
                   }
                   p.fill(
                     255,
-                    p.map(this.alpha, 0, 1, 0, p.map(sldr[7], 0, 1, 0, 0.8))
+                    p.map(this.alpha, 0, 1, 0, p.map(sldr[7], 0, 1, 0, 0.8)),
                   );
                   p.noStroke();
                   p.rect(this.pos.x, this.pos.y, 2, 2);
@@ -218,7 +227,7 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
                   }
                   p.fill(
                     255,
-                    p.map(this.alpha, 0, 1, 0, p.map(sldr[7], 0, 1, 0, 0.8))
+                    p.map(this.alpha, 0, 1, 0, p.map(sldr[7], 0, 1, 0, 0.8)),
                   );
                   p.noStroke();
                   p.rect(this.pos.x, this.pos.y, 2, 2);
@@ -234,50 +243,50 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
                         this.pos.x - mark,
                         this.pos.y,
                         this.pos.x + mark,
-                        this.pos.y
+                        this.pos.y,
                       );
                       icles.line(
                         this.pos.x,
                         this.pos.y - mark,
                         this.pos.x,
-                        this.pos.y + mark
+                        this.pos.y + mark,
                       );
                       p.line(
                         this.pos.x - mark,
                         this.pos.y,
                         this.pos.x + mark,
-                        this.pos.y
+                        this.pos.y,
                       );
                       p.line(
                         this.pos.x,
                         this.pos.y - mark,
                         this.pos.x,
-                        this.pos.y + mark
+                        this.pos.y + mark,
                       );
                     } else {
                       icles.line(
                         this.pos.x - mark,
                         this.pos.y - mark,
                         this.pos.x + mark,
-                        this.pos.y + mark
+                        this.pos.y + mark,
                       );
                       icles.line(
                         this.pos.x - mark,
                         this.pos.y + mark,
                         this.pos.x + mark,
-                        this.pos.y - mark
+                        this.pos.y - mark,
                       );
                       p.line(
                         this.pos.x - mark,
                         this.pos.y - mark,
                         this.pos.x + mark,
-                        this.pos.y + mark
+                        this.pos.y + mark,
                       );
                       p.line(
                         this.pos.x - mark,
                         this.pos.y + mark,
                         this.pos.x + mark,
-                        this.pos.y - mark
+                        this.pos.y - mark,
                       );
                     }
                   }
@@ -293,7 +302,7 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
                   }
                   p.fill(
                     255,
-                    p.map(this.alpha, 0, 1, 0, p.map(sldr[7], 0, 1, 0, 0.8))
+                    p.map(this.alpha, 0, 1, 0, p.map(sldr[7], 0, 1, 0, 0.8)),
                   );
                   p.noStroke();
                   p.rect(this.pos.x, this.pos.y, 2, 2);
@@ -336,7 +345,9 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
             // const canvasHeight = 200;
             const canvas = fullScreen
               ? p.createCanvas(canvasWidth, canvasHeight)
-              : p.createCanvas(canvasWidth - 8, canvasHeight - 8);
+              : overScreen
+                ? p.createCanvas(canvasWidth + 8, canvasHeight + 8)
+                : p.createCanvas(canvasWidth - 8, canvasHeight - 8);
             canvas.parent(canvasRef.current);
             p.pixelDensity(1);
             p.colorMode(p.RGB, 255, 255, 255, 1);
@@ -412,7 +423,38 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
             }
           };
         };
-        new p5(sketch);
+
+        const p5Instance = new p5(sketch);
+        p5InstanceRef.current = p5Instance; // Store p5 instance
+
+        const handleResize = () => {
+          const canvasParent = canvasRef.current!.parentElement;
+          const canvasWidth = canvasParent ? canvasParent.offsetWidth : 374;
+          const canvasHeight = canvasParent ? canvasParent.offsetHeight : 374;
+          console.log("reSizes", canvasWidth, canvasHeight);
+
+          p5Instance.resizeCanvas(
+            fullScreen
+              ? canvasWidth
+              : overScreen
+                ? canvasWidth + 8
+                : canvasWidth - 8,
+            fullScreen
+              ? canvasHeight
+              : overScreen
+                ? canvasHeight + 8
+                : canvasHeight - 8,
+          );
+
+          p5Instance.redraw();
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+          window.removeEventListener("resize", handleResize);
+          p5Instance.remove();
+        };
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -421,7 +463,7 @@ const Box = ({ userID, userScore, fullScreen = false, className }: Props) => {
   return (
     <div
       ref={canvasRef}
-      className={`absolute z-10 w-full h-full ${className}`}
+      className={`absolute z-10 h-full w-full ${className}`}
     />
   );
 };

@@ -1,5 +1,4 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-// import { useMainButton } from "@tma.js/sdk-react";
 import { Context } from "@/components/Provider";
 import { useRouter } from "next/router";
 import GridDot from "@/components/ui/gridDot";
@@ -8,30 +7,9 @@ import { FaShareSquare } from "react-icons/fa";
 import { supabase } from "@/utils/supabase";
 import { tableMap, UserData } from "@/types/types";
 import Box from "@/components/p5/Art";
+import { useBackButton } from "@tma.js/sdk-react";
 
 export default function MBTI() {
-  const { goPage, userData } = useContext(Context);
-  const router = useRouter();
-  const id = router.query.id;
-  const [targetUserData, setTargetUserData] = useState<UserData>();
-  const isSelfMBTI = targetUserData && Number(id) === targetUserData.user_id;
-
-  const getUserData = useCallback(async () => {
-    if (id) {
-      const { data: user } = await supabase
-        .from(tableMap.users)
-        .select("*")
-        .eq("user_id", Number(id));
-      if (user && user.length > 0) {
-        setTargetUserData(user[0] as UserData);
-      }
-    }
-  }, [id]);
-
-  useEffect(() => {
-    getUserData();
-  }, [id]);
-
   const MBTI_TITLE = [
     {
       title: ["Introversion", "Extraversion"],
@@ -78,16 +56,49 @@ export default function MBTI() {
       ],
     },
   ];
+  const { goPage, userData } = useContext(Context);
+  const router = useRouter();
+  const id = router.query.id;
+  const [targetUserData, setTargetUserData] = useState<UserData>();
+  const isSelfMBTI = userData && Number(id) === userData.user_id;
+  const backButton = useBackButton();
+  const onBackButtonClick = () => {
+    router.back();
+  };
+  const getUserData = useCallback(async () => {
+    if (id) {
+      const { data: user } = await supabase
+        .from(tableMap.users)
+        .select("*")
+        .eq("user_id", Number(id));
+      if (user && user.length > 0) {
+        setTargetUserData(user[0] as UserData);
+      }
+    }
+  }, [id]);
+
+  useEffect(() => {
+    getUserData();
+  }, [id]);
+  useEffect(() => {
+    backButton.show();
+    backButton.on("click", onBackButtonClick);
+    return () => {
+      backButton.off("click", onBackButtonClick);
+      backButton.hide();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="relative z-20 flex h-full w-full flex-col items-center gap-1 bg-black">
       <div className="z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-[20px] tracking-[3.2px] text-white">
         <FaArrowLeftLong
           size={20}
-          onClick={() => goPage("/")}
+          onClick={() => router.back()}
           className="cursor-pointer hover:opacity-60"
         />
-        <a className="absolute left-1/2 -translate-x-[48%]">
+        <a className="absolute left-1/2 -translate-x-[48%] uppercase">
           {isSelfMBTI ? "MY SYNTAX" : targetUserData?.username}
         </a>
         <FaShareSquare size={20} />

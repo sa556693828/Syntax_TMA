@@ -31,6 +31,7 @@ export type UserData = {
   inviteFrom_id: number | null;
   testScore: number | null;
   friends: Array<number>;
+  tokens: number | null;
 };
 export type UserTG = {
   allowsWriteToPm: boolean;
@@ -41,3 +42,21 @@ export type UserTG = {
   lastName: string;
   username: string;
 };
+
+export type EventType =
+  | "firstTest"
+  | "aiChat"
+  | "inviteFriends"
+  | "overFiveFriends"
+  | "connectWallet"
+  | "dailyGame"
+  | "dailyGameHighScore";
+export enum EventEnum {
+  firstTest = "firstTest",
+  aiChat = "aiChat",
+  inviteFriends = "inviteFriends",
+  overFiveFriends = "overFiveFriends",
+  connectWallet = "connectWallet",
+  dailyGame = "dailyGame",
+  dailyGameHighScore = "dailyGameHighScore",
+}

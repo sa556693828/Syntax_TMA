@@ -4,7 +4,7 @@ import { Context } from "@/components/Provider";
 import { useRouter } from "next/router";
 import { useInitData } from "@tma.js/sdk-react";
 import { supabase } from "@/utils/supabase";
-import { tableMap, UserData } from "@/types/types";
+import { EventEnum, tableMap, UserData } from "@/types/types";
 import ProfileTab from "@/components/pagesUI/ProfilePage/ProfileTab";
 import Box from "@/components/p5/Art";
 
@@ -21,14 +21,17 @@ export default function Home() {
   const { user: userTG } = initData as any;
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loadingTime, setLoadingTime] = useState(false);
-  const { goPage, reFetchUserData } = useContext(Context);
+  const { goPage, updateUserToken } = useContext(Context);
   const meFunction: MeFunction[] = [
     {
       title: "DECODE SYNTAX",
       content: userData?.testScore ? Math.ceil(userData.testScore) : "?",
       left: "%",
       right: "DECODED",
-      onClick: () => goPage("/decode"),
+      onClick: () => {
+        goPage("/decode");
+        updateUserToken(userTG.id, EventEnum.dailyGame);
+      },
     },
     {
       title: "THE VOID",
@@ -49,7 +52,9 @@ export default function Home() {
       content: "!",
       left: "REWARDS",
       right: "AWAIT",
-      onClick: () => goPage("/exchange"),
+      onClick: () => {
+        goPage("/exchange");
+      },
     },
   ];
   useEffect(() => {
@@ -93,6 +98,7 @@ export default function Home() {
       </div>
     );
   }
+
   return (
     <div className="relative z-20 flex h-full w-full flex-col items-center gap-1 bg-black">
       <div className="absolute z-20 flex h-24 w-full items-center justify-between bg-transparent px-6 text-[20px] tracking-[3.2px] text-white">
@@ -107,7 +113,9 @@ export default function Home() {
           />
         )}
         <div className="absolute -bottom-8 flex w-full items-end justify-between px-4 text-white">
-          <a className="z-20 text-[80px] leading-none">10</a>
+          <a className="z-20 text-[80px] leading-none">
+            {userData && userData.tokens ? userData.tokens : 0}
+          </a>
           <a className="z-20 pb-2 text-xs leading-none tracking-[1.92px]">
             syntkns
           </a>
