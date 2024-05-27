@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      {/* TODO: 改成自己的 */}
       <TonConnectUIProvider
         manifestUrl="https://syntax-tma.vercel.app/tonconnect-manifest.json"
         actionsConfiguration={{

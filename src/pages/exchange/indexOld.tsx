@@ -10,7 +10,10 @@ import {
   CHAIN,
 } from "@tonconnect/ui-react";
 import { useContext, useEffect } from "react";
+import { TonClient, WalletContractV4, internal } from "@ton/ton";
+import { mnemonicNew, mnemonicToPrivateKey } from "@ton/crypto";
 import TonWeb from "tonweb";
+import nacl from "tweetnacl";
 
 const Mainnet = "https://toncenter.com/api/v2/jsonRPC";
 const Testnet = "https://testnet.toncenter.com/api/v2/jsonRPC";
