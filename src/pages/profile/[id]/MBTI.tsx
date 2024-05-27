@@ -92,7 +92,7 @@ export default function MBTI() {
 
   return (
     <div className="relative z-20 flex h-full w-full flex-col items-center gap-1 bg-black">
-      <div className="z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-[20px] tracking-[3.2px] text-white">
+      <div className="z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-lg text-white">
         <FaArrowLeftLong
           size={20}
           onClick={() => router.back()}
@@ -121,7 +121,7 @@ export default function MBTI() {
               className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-blackBg p-1 uppercase text-white"
             >
               <div className="w-full text-start">
-                <a className="text-center text-xs tracking-[1.92px]">
+                <a className="text-center text-xs">
                   {score < 0.5
                     ? MBTI_TITLE[index].title[0]
                     : MBTI_TITLE[index].title[1]}
@@ -133,8 +133,8 @@ export default function MBTI() {
                   : MBTI_TITLE[index].value[1]}
               </a>
               <div className="flex w-full justify-between">
-                <a className="text-xs tracking-[1.92px]">{score * 100}</a>
-                <a className="text-xs tracking-[1.92px]">%</a>
+                <a className="text-xs">{score * 100}</a>
+                <a className="text-xs">%</a>
               </div>
             </div>
           ))}
@@ -144,25 +144,21 @@ export default function MBTI() {
             className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase hover:opacity-80"
           >
             <div className="w-full text-start">
-              <a className="text-center text-xs tracking-[1.92px]">
-                REDO SYNTAX
-              </a>
+              <a className="text-center text-xs">REDO SYNTAX</a>
             </div>
             <a className="text-[96px] leading-[78.72px] tracking-[3.84px]">
               {/* {func.content} */}
               <GridDot count={0} size="big" />
             </a>
             <div className="flex w-full justify-between">
-              {/* <a className="text-xs tracking-[1.92px]">{func.left}</a> */}
-              {/* <a className="text-xs tracking-[1.92px]">{func.right}</a> */}
+              {/* <a className="text-xs">{func.left}</a> */}
+              {/* <a className="text-xs">{func.right}</a> */}
             </div>
           </div>
         ) : (
           <div className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase hover:opacity-80">
             <div className="w-full text-start">
-              <a className="text-center text-xs tracking-[1.92px]">
-                DECODE SYNTAX
-              </a>
+              <a className="text-center text-xs">DECODE SYNTAX</a>
             </div>
             <a className="text-[96px] leading-[78.72px] tracking-[3.84px]">
               {targetUserData && targetUserData.testScore
@@ -170,8 +166,8 @@ export default function MBTI() {
                 : "?"}
             </a>
             <div className="flex w-full justify-between">
-              <a className="text-xs tracking-[1.92px]">%</a>
-              <a className="text-xs tracking-[1.92px]">DECODED</a>
+              <a className="text-xs">%</a>
+              <a className="text-xs">DECODED</a>
             </div>
           </div>
         )}

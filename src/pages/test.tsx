@@ -95,7 +95,7 @@ export default function Test() {
       <Card className="flex h-full flex-col items-start justify-start gap-4 p-12">
         <GridDot count={questionIndex + 1} />
         <a className="flex-1">{question[questionIndex].title}</a>
-        <a className="text-xs tracking-[1.92px] opacity-60">{`${
+        <a className="text-xs opacity-60">{`${
           questionIndex + 1
         }/${question.length}`}</a>
       </Card>
@@ -127,17 +127,17 @@ export default function Test() {
           </div>
         </div>
         <div className="flex w-full justify-between">
-          <a className="text-xs tracking-[1.92px] text-white opacity-60">
+          <a className="text-xs text-white opacity-60">
             {question[questionIndex].value[0]}
           </a>
-          <a className="text-xs tracking-[1.92px] text-white opacity-60">
+          <a className="text-xs text-white opacity-60">
             {question[questionIndex].value[1]}
           </a>
         </div>
       </div>
       <div className="h-[62px] w-full">
         <button
-          className="flex h-full w-full items-center justify-center rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+          className="flex h-full w-full items-center justify-center rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
           onClick={
             questionIndex === question.length - 1
               ? () => handleSubmit()

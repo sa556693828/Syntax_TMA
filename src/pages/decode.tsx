@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "@/components/Provider";
-import { tableMap } from "@/types/types";
+import { EventEnum, tableMap } from "@/types/types";
 import { supabase } from "@/utils/supabase";
 import { useBackButton } from "@tma.js/sdk-react";
 import Card from "@/components/Card";
@@ -48,7 +48,8 @@ export default function Decode() {
   const [score, setScore] = useState(new Array(8).fill(0.5));
   const [userValue, setUserValue] = useState<number>(0.5);
   const [loading, setLoading] = useState(false);
-  const { userTG, reFetchUserData, goPage, userData } = useContext(Context);
+  const { userTG, reFetchUserData, goPage, userData, updateUserToken } =
+    useContext(Context);
   const backButton = useBackButton();
   const onBackButtonClick = () => {
     goPage("/");
@@ -60,7 +61,12 @@ export default function Decode() {
         .from(tableMap.users)
         .update({ testScore: testScore })
         .eq("user_id", userTG?.id as number);
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
+      if (testScore > 70) {
+        updateUserToken(userTG?.id as number, EventEnum.dailyGameHighScore);
+      }
       reFetchUserData();
     } catch (error) {
       console.log("error", error);
@@ -144,17 +150,17 @@ export default function Decode() {
           </div>
         </div>
         <div className="flex w-full justify-between">
-          <a className="text-xs tracking-[1.92px] text-white opacity-60">
+          <a className="text-xs text-white opacity-60">
             {question[questionIndex].value[0]}
           </a>
-          <a className="text-xs tracking-[1.92px] text-white opacity-60">
+          <a className="text-xs text-white opacity-60">
             {question[questionIndex].value[1]}
           </a>
         </div>
       </div>
       <div className="h-[62px] w-full">
         <button
-          className="flex h-full w-full items-center justify-center rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+          className="flex h-full w-full items-center justify-center rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
           onClick={
             questionIndex === question.length - 1
               ? () => handleSubmit()

@@ -47,13 +47,13 @@ export default function InitStory() {
         <div className="flex flex-col gap-4">
           <PiDotsNineBold />
           {contentSection()}
-          <a className="text-xs tracking-[1.92px] opacity-60">{`${state}/3`}</a>
+          <a className="text-xs opacity-60">{`${state}/3`}</a>
         </div>
       </Card>
 
       <div className="h-[62px] w-full">
         <button
-          className="h-full w-full rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+          className="h-full w-full rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
           onClick={
             state === 3
               ? () => goPage("/test")

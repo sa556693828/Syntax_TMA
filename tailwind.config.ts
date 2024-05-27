@@ -19,6 +19,22 @@ const config: Config = {
         grey: "#2a2a2a",
         white: "#F5F5F5",
       },
+      fontSize: {
+        xs: [
+          "12px",
+          {
+            // lineHeight: "150%",
+            letterSpacing: "1.92px",
+          },
+        ],
+        lg: [
+          "20px",
+          {
+            lineHeight: "150%",
+            letterSpacing: "3.2px",
+          },
+        ],
+      },
     },
   },
 

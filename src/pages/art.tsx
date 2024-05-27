@@ -53,7 +53,7 @@ export default function Art() {
       <div className="w-full space-y-1">
         <div className="h-[62px] w-full">
           <button
-            className="h-full w-full rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+            className="h-full w-full rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
             onClick={() => goPage("/")}
           >
             {"HOW DOES THIS WORK?"}
@@ -61,7 +61,7 @@ export default function Art() {
         </div>
         <div className="h-[62px] w-full">
           <button
-            className="h-full w-full rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+            className="h-full w-full rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
             onClick={() => goPage("/")}
           >
             {"WHY DID YOU DO THIS?"}
@@ -69,7 +69,7 @@ export default function Art() {
         </div>
         <div className="h-[62px] w-full">
           <button
-            className="h-full w-full rounded-md border bg-white text-[20px] leading-[150%] tracking-[3.2px] text-blackBg hover:border-white/20 hover:bg-white/80"
+            className="h-full w-full rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
             onClick={() => goPage("/")}
           >
             {"WHAT ELSE IS THERE?"}

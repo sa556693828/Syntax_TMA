@@ -2,13 +2,11 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "@/components/Provider";
 import { tableMap, UserData } from "@/types/types";
 import { supabase } from "@/utils/supabase";
-import { useBackButton } from "@tma.js/sdk-react";
 import ProfileTab from "@/components/pagesUI/ProfilePage/ProfileTab";
 import Box from "@/components/p5/Art";
 
 export default function Friends() {
   const { userData, userTG, reFetchUserData, goPage } = useContext(Context);
-  const [loading, setLoading] = useState(false);
   const [friendsData, setFriendsData] = useState<UserData[]>([]);
 
   const handleAddFriendClick = () => {
@@ -39,7 +37,7 @@ export default function Friends() {
 
   return (
     <div className="relative z-20 flex h-full min-h-[100vh] w-full flex-col items-center gap-1 bg-black">
-      <div className="z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-[20px] tracking-[3.2px] text-white">
+      <div className="z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-lg text-white">
         <ProfileTab />
       </div>
 
@@ -57,7 +55,7 @@ export default function Friends() {
               userScore={friend.score as any}
               overScreen={true}
             />
-            <a className="absolute bottom-1 left-1 z-50 text-xs tracking-[1.92px] text-white">
+            <a className="absolute bottom-1 left-1 z-50 text-xs text-white">
               {friend.username}
             </a>
           </div>
@@ -67,7 +65,7 @@ export default function Friends() {
           onClick={() => handleAddFriendClick()}
         >
           <div className="w-full text-start">
-            <a className="text-center text-xs tracking-[1.92px]">ADD FRIEND</a>
+            <a className="text-center text-xs">ADD FRIEND</a>
           </div>
         </div>
       </div>

@@ -1,17 +1,10 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 // import { useMainButton } from "@tma.js/sdk-react";
-import sample_2 from "@/assets/sample_2.png";
-import Image from "next/image";
-import { PiDotsNineBold } from "react-icons/pi";
 import { Context } from "@/components/Provider";
-import { tableMap } from "@/types/types";
-import { supabase } from "@/utils/supabase";
 import { useBackButton, useInitData } from "@tma.js/sdk-react";
-import Card from "@/components/Card";
-import GridDot from "@/components/ui/gridDot";
-import Box from "@/components/p5/Art";
-import { constants } from "buffer";
 import axios from "axios";
+import { FaArrowLeftLong } from "react-icons/fa6";
+import { useRouter } from "next/router";
 
 interface Prompt {
   model: string;
@@ -20,32 +13,46 @@ interface Prompt {
 }
 
 export default function Void() {
+  const url = "https://5b5c-61-220-186-2.ngrok-free.app";
   const { goPage, userData } = useContext(Context);
+  const [inputMode, setInputMode] = useState(false);
+  const [userInput, setUserInput] = useState("");
+  const [aiRes, setAiRes] = useState("");
+  const router = useRouter();
   const backButton = useBackButton();
   const onBackButtonClick = () => {
     goPage("/");
   };
 
-  const [answer, setAnswer] = useState<string>("");
-  const [prompt, setPrompt] = useState<Prompt>({
-    model: "phi3",
-    prompt: "",
-    stream: false,
-  });
-
   const aiAPI = async () => {
     try {
-      const response = await axios.post(
-        "https://api.openai.com/v1/engines/davinci-codex/completions",
-        prompt,
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // },
-      );
-      console.log(response.data);
-      return response.data;
+      const prompt = {
+        model: "llama3",
+        prompt: userInput,
+        stream: false,
+      };
+      // const response = await axios.post(url, prompt);
+      const sample = {
+        model: "llama3",
+        created_at: "2024-05-25T06:57:54.1377341Z",
+        response: "I'll do my best to help you out.",
+        done: true,
+        done_reason: "stop",
+        context: [
+          128006, 882, 128007, 271, 35734, 128009, 128006, 78191, 128007, 271,
+          2181, 5084, 1093, 499, 3940, 311, 2610, 264, 3488, 11, 719, 433, 2751,
+          4018, 1022, 13, 16910, 499, 4587, 312, 28810, 477, 4686, 701, 3488,
+          30, 358, 3358, 656, 856, 1888, 311, 1520, 499, 704, 13, 128009,
+        ],
+        total_duration: 1318726506,
+        load_duration: 1355500,
+        prompt_eval_duration: 343516000,
+        eval_count: 37,
+        eval_duration: 926039000,
+      };
+      // console.log(response.data);
+      // setAiRes(response.data.choices[0].text);
+      setAiRes(sample.response);
     } catch (error) {
       console.error(error);
     }
@@ -57,12 +64,60 @@ export default function Void() {
       backButton.off("click", onBackButtonClick);
       backButton.hide();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="flex h-[100vh] w-full flex-col items-center justify-between gap-1 p-1">
-      {answer ? (
+    <div className="flex h-[100vh] w-full flex-col items-center bg-black">
+      <div className="z-20 flex h-24 w-full items-center justify-center bg-transparent px-6 text-lg">
+        <FaArrowLeftLong
+          size={20}
+          onClick={() => router.back()}
+          className="absolute left-6 cursor-pointer hover:opacity-60"
+        />
+        <a className="text-nowrap">
+          {inputMode ? "TALK TO THE VOID" : "THE VOID"}
+        </a>
+      </div>
+      {!inputMode && (
+        <div className="flex h-full w-full flex-col items-center justify-center px-1">
+          <a className="text-xs uppercase tracking-[1.92px]">
+            you stare on to the void
+          </a>
+          <button
+            onClick={() => setInputMode(!inputMode)}
+            className="my-20 h-[62px] w-full rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
+          >
+            TALK TO THE VOID
+          </button>
+          <a className="text-xs uppercase tracking-[1.92px]">
+            and the void stares back
+          </a>
+        </div>
+      )}
+      {inputMode && (
+        <div className="flex h-full w-full flex-col items-center justify-between gap-4 overflow-hidden px-1 pb-16 pt-14 text-center">
+          <a className="max-w-[300px] overflow-y-auto text-center text-lg">
+            {aiRes}
+          </a>
+          <div className="flex w-full flex-col items-center justify-end gap-9">
+            <a className="text-xs opacity-60">{`(${userInput.length}/300)`}</a>
+            <div className="relative w-full">
+              <input
+                className="h-14 w-full rounded-md border border-blackBg bg-black p-2 caret-white outline-none"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+              />
+              <button
+                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-lg uppercase"
+                onClick={aiAPI}
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* {answer ? (
         <div className="flex flex-col items-center justify-center gap-1">
           <h1 className="text-2xl font-bold">Answer</h1>
           <p>{answer}</p>
@@ -85,7 +140,7 @@ export default function Void() {
             Submit
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

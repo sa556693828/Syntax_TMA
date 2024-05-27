@@ -55,8 +55,8 @@ export enum EventEnum {
   firstTest = "firstTest",
   aiChat = "aiChat",
   inviteFriends = "inviteFriends",
-  overFiveFriends = "overFiveFriends",
-  connectWallet = "connectWallet",
+  overFiveFriends = "overFiveFriends", //TODO: add this event
+  connectWallet = "connectWallet", //TODO: add this event
   dailyGame = "dailyGame",
   dailyGameHighScore = "dailyGameHighScore",
 }
