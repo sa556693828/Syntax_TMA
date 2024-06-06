@@ -4,6 +4,7 @@ import { tableMap, UserData } from "@/types/types";
 import { supabase } from "@/utils/supabase";
 import ProfileTab from "@/components/pagesUI/ProfilePage/ProfileTab";
 import Box from "@/components/p5/Art";
+import { getUsernameOrName } from "@/utils/helpers";
 
 export default function Friends() {
   const { userData, userTG, reFetchUserData, goPage } = useContext(Context);
@@ -40,8 +41,7 @@ export default function Friends() {
       <div className="z-20 flex h-24 w-full items-center justify-between bg-black px-6 text-lg text-white">
         <ProfileTab />
       </div>
-
-      <div className="grid w-full grid-cols-2 gap-1 px-1">
+      <div className="grid w-full grid-cols-2 gap-1 px-1 text-white">
         {friendsData?.map((friend, index) => (
           <div
             key={index}
@@ -56,7 +56,7 @@ export default function Friends() {
               overScreen={true}
             />
             <a className="absolute bottom-1 left-1 z-50 text-xs text-white">
-              {friend.username}
+              {getUsernameOrName(friend)}
             </a>
           </div>
         ))}

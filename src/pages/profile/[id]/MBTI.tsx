@@ -8,6 +8,7 @@ import { supabase } from "@/utils/supabase";
 import { tableMap, UserData } from "@/types/types";
 import Box from "@/components/p5/Art";
 import { useBackButton } from "@tma.js/sdk-react";
+import { getUsernameOrName } from "@/utils/helpers";
 
 export default function MBTI() {
   const MBTI_TITLE = [
@@ -99,7 +100,9 @@ export default function MBTI() {
           className="cursor-pointer hover:opacity-60"
         />
         <a className="absolute left-1/2 -translate-x-[48%] uppercase">
-          {isSelfMBTI ? "MY SYNTAX" : targetUserData?.username}
+          {isSelfMBTI
+            ? "MY SYNTAX"
+            : targetUserData && getUsernameOrName(targetUserData as UserData)}
         </a>
         <FaShareSquare size={20} />
       </div>
@@ -141,7 +144,7 @@ export default function MBTI() {
         {isSelfMBTI ? (
           <div
             onClick={() => goPage("/test")}
-            className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase hover:opacity-80"
+            className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase text-black hover:opacity-80"
           >
             <div className="w-full text-start">
               <a className="text-center text-xs">REDO SYNTAX</a>
@@ -156,7 +159,7 @@ export default function MBTI() {
             </div>
           </div>
         ) : (
-          <div className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase hover:opacity-80">
+          <div className="relative flex h-[189px] w-full flex-col items-center justify-between rounded-lg bg-white px-2 py-1 uppercase text-black hover:opacity-80">
             <div className="w-full text-start">
               <a className="text-center text-xs">DECODE SYNTAX</a>
             </div>
