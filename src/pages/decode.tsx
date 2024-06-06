@@ -110,12 +110,9 @@ export default function Decode() {
     <div className="relative flex h-full min-h-[100dvh] w-full flex-col items-center justify-center gap-1 p-1">
       <Card className="flex h-full flex-col items-start justify-start gap-4 p-12">
         <GridDot count={8} />
-        <a className="flex-1 whitespace-pre-wrap">
+        <a className="flex-1 whitespace-pre-wrap text-black">
           {question[questionIndex].title}
         </a>
-        <div className="flex w-10 flex-col flex-wrap">
-          <a className="text-xs">yourValue: {JSON.stringify(userValue)}</a>
-        </div>
         <div className="relative z-50 size-full h-[286px] rounded-md bg-white">
           {userData && userData.user_id && viewArt && (
             <Box

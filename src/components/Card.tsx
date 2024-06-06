@@ -10,7 +10,7 @@ export default function Card({
 }) {
   return (
     <div
-      className={`bg-greyBg w-full relative uppercase rounded-lg tracking-[2.56px] text-base ${
+      className={`relative w-full rounded-lg bg-greyBg text-base uppercase tracking-[2.56px] text-black ${
         className ? className : ""
       }`}
     >
