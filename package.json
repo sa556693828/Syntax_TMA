@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-crypto/sha256-js": "^5.2.0",
+    "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.39.8",
     "@tma.js/sdk": "^1.5.0",
     "@tma.js/sdk-react": "^1.1.0",
@@ -20,13 +22,18 @@
     "@tonconnect/ui-react": "^2.0.0",
     "axios": "^1.7.2",
     "buffer": "^6.0.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "eruda": "^3.0.1",
+    "lucide-react": "^0.383.0",
     "next": "14.2.1",
     "p5": "^1.9.2",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "sass": "^1.77.2",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7",
     "tonweb": "^0.0.66",
     "tweetnacl": "^1.0.3"
   },

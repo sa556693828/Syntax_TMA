@@ -7,6 +7,7 @@ import { supabase } from "@/utils/supabase";
 import { EventEnum, tableMap, UserData } from "@/types/types";
 import ProfileTab from "@/components/pagesUI/ProfilePage/ProfileTab";
 import Box from "@/components/p5/Art";
+import { postEvent } from "@tma.js/sdk";
 
 interface MeFunction {
   title: string;
@@ -89,6 +90,7 @@ export default function Home() {
         module.default.init();
       });
     }
+    postEvent("web_app_expand");
   }, []);
 
   if (!userData || !userData.score || !loadingTime) {
