@@ -16,6 +16,7 @@ import {
   fromNano,
   internal,
   toNano,
+  OpenedContract,
 } from "@ton/core";
 import Button from "@/components/ui/button";
 import TonWeb from "tonweb";
