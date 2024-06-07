@@ -7,7 +7,6 @@ import {
   useTonConnectModal,
   useTonConnectUI,
   useTonWallet,
-  TonConnectUI,
 } from "@tonconnect/ui-react";
 import { useBackButton } from "@tma.js/sdk-react";
 import {
@@ -20,21 +19,6 @@ import {
   OpenedContract,
 } from "@ton/core";
 import Button from "@/components/ui/button";
-import TonWeb from "tonweb";
-import { TonClient, TonClient4, WalletContractV4 } from "@ton/ton";
-import { mnemonicToPrivateKey } from "@ton/crypto";
-import { buildOnchainMetadata } from "@/utils/jetton-helpers";
-import {
-  SampleJetton,
-  storeTokenTransfer,
-} from "../contracts/SampleJetton_SampleJetton";
-import { getHttpV4Endpoint } from "@orbs-network/ton-access";
-import {
-  AssetsSDK,
-  createApi,
-  PinataStorageParams,
-  storeJettonMintMessage,
-} from "@ton-community/assets-sdk";
 import { assetsConnectSDK } from "@/lib/use-connect";
 // import { TonConnectUI } from "@tonconnect/ui";
 
@@ -64,11 +48,7 @@ export default function Exchange() {
   const testAddress = Address.parse(
     "UQDbbiiaZmmIQa2FLRlQvLDbzRqWVJK6EIbXsV2WLYS2QI8b",
   );
-  // const tonweb = new TonWeb(
-  //   new TonWeb.HttpProvider("https://testnet.toncenter.com/api/v2/jsonRPC", {
-  //     apiKey: "YOUR_TESTNET_API_KEY",
-  //   }),
-  // );
+
   const initJetton = useCallback(async () => {
     if (!wallet) return;
     const provider = await assetsConnectSDK(tonConnectUI as any);
@@ -87,23 +67,6 @@ export default function Exchange() {
     } catch (e) {
       console.log(e);
     }
-
-    // const payloadBase64 = beginCell()
-    // .store(
-    //   storeJettonMintMessage({
-    //     queryId: BigInt(0),
-    //     amount: BigInt("0.2"),
-    //     from: jettonMaster,
-    //     to: deployerAddress,
-    //     responseAddress: deployerAddress,
-    //     forwardPayload: null,
-    //     forwardTonAmount: BigInt(1),
-    //     walletForwardValue: walletForwardValue,
-    //   }),
-    // )
-    // .endCell()
-    // .toBoc()
-    // .toString("base64");
   }, []);
 
   const sendTon = async () => {
@@ -128,7 +91,8 @@ export default function Exchange() {
       console.log("send");
       const result = await tonConnectUI.sendTransaction(transaction as any);
       // const someTxData = await tonfura.core.getTransactions(result.boc as any);
-      console.log("result", result.boc);
+      console.log("result", result);
+      console.log("result.boc", result.boc);
       if (result.boc) {
         console.log("Transaction sent successfully");
       }
