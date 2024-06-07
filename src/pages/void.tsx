@@ -13,7 +13,7 @@ interface Prompt {
 }
 
 export default function Void() {
-  const url = "https://5b5c-61-220-186-2.ngrok-free.app";
+  const url = "https://584f-61-220-186-2.ngrok-free.app";
   const { goPage, userData } = useContext(Context);
   const [inputMode, setInputMode] = useState(false);
   const [userInput, setUserInput] = useState("");
@@ -31,7 +31,7 @@ export default function Void() {
         prompt: userInput,
         stream: false,
       };
-      // const response = await axios.post(url, prompt);
+      const response = await axios.post(url, prompt);
       const sample = {
         model: "llama3",
         created_at: "2024-05-25T06:57:54.1377341Z",
@@ -50,9 +50,9 @@ export default function Void() {
         eval_count: 37,
         eval_duration: 926039000,
       };
-      // console.log(response.data);
-      // setAiRes(response.data.choices[0].text);
-      setAiRes(sample.response);
+      console.log(response.data);
+      setAiRes(response.data.choices[0].text);
+      // setAiRes(sample.response);
     } catch (error) {
       console.error(error);
     }
