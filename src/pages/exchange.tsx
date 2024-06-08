@@ -20,6 +20,13 @@ import {
 } from "@ton/core";
 import Button from "@/components/ui/button";
 import { assetsConnectSDK } from "@/lib/use-connect";
+import {
+  deployerAddress,
+  jettonContent,
+  jettonMaster,
+  testAddress,
+} from "@/constants/jetton";
+import { SampleJetton, storeMint } from "@/contracts/SampleJetton_SampleJetton";
 // import { TonConnectUI } from "@tonconnect/ui";
 
 // get the decentralized RPC endpoint
@@ -36,33 +43,39 @@ export default function Exchange() {
   const onBackButtonClick = () => {
     goPage("/");
   };
-  const jettonMaster = Address.parse(
-    "EQD4pOfNjdDA_-MzVGH4aqfNjIHxKrJ_RBLWXg9Bd07EKi8B",
-  );
-  const NewOwner_Address = Address.parse(
-    "UQD6mORg_6kpV0rIS7XMGDBW0D3qWk2JtW5v8xH9fyAQoPMB",
-  ); // 🔴 Owner should usually be the deploying wallet's address.
-  const deployerAddress = Address.parse(
-    "UQCXlMnuTIamRK7Sv7mAWbFnvJX7DKwmpPa2M_w3QGWBrT8Y",
-  );
-  const testAddress = Address.parse(
-    "UQDbbiiaZmmIQa2FLRlQvLDbzRqWVJK6EIbXsV2WLYS2QI8b",
-  );
 
   const initJetton = useCallback(async () => {
     if (!wallet) return;
     const provider = await assetsConnectSDK(tonConnectUI as any);
     try {
       const sdk = await provider.sdk;
-      const jetton = await sdk.openJetton(jettonMaster);
-
-      const RECEIVER_ADDRESS = deployerAddress;
-      const myJettonWallet = await jetton.getWallet(sdk.sender!.address!);
-      const result = await myJettonWallet.send(
-        provider.sender,
-        RECEIVER_ADDRESS,
-        toNano(10),
+      const contract_dataFormat = SampleJetton.fromAddress(jettonMaster); //記得改成init完後的
+      const contract = await sdk.api.open(contract_dataFormat);
+      //   const jetton = await sdk.openJetton(jettonMaster);
+      const myJettonWallet = await contract.getGetWalletAddress(
+        sdk.sender!.address!,
       );
+
+      let packed = beginCell()
+        .store(
+          storeMint({
+            $$type: "Mint",
+            amount: toNano(1),
+          }),
+        )
+        .endCell();
+      const transaction = {
+        validUntil: Math.floor(Date.now() / 1000) + 360,
+        messages: [
+          {
+            address: myJettonWallet.toRawString(),
+            amount: "10000000", // 0.01 Ton
+            payload: packed.toBoc().toString("base64"), // payload with comment in body
+          },
+        ],
+      };
+      const result = await tonConnectUI.sendTransaction(transaction as any);
+
       console.log("✨ result\n" + result);
     } catch (e) {
       console.log(e);
@@ -78,10 +91,7 @@ export default function Exchange() {
       validUntil: Math.floor(Date.now() / 1000) + 360,
       messages: [
         {
-          address:
-            // "0:9794c9ee4c86a644aed2bfb98059b167bc95fb0cac26a4f6b633fc37406581ad", // destination address
-            // "0:f267dbaa5e53cd3c75ac47839ea0f20f44206ead9412410a14d0feee6889780e",
-            "UQDbbiiaZmmIQa2FLRlQvLDbzRqWVJK6EIbXsV2WLYS2QI8b", // TonKeeper "Test" address on mainnet
+          address: testAddress, // TonKeeper "Test" address on mainnet
           amount: "10000000", // 0.01 Ton
           payload: body.toBoc().toString("base64"), // payload with comment in body
         },
@@ -90,10 +100,7 @@ export default function Exchange() {
     try {
       console.log("send");
       const result = await tonConnectUI.sendTransaction(transaction as any);
-      // const someTxData = await tonfura.core.getTransactions(result.boc as any);
-      console.log("result", result);
-      console.log("result.boc", result.boc);
-      if (result.boc) {
+      if (result) {
         console.log("Transaction sent successfully");
       }
     } catch (e) {

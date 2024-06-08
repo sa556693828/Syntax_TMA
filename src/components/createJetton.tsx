@@ -26,7 +26,12 @@ import {
   SampleJetton,
   storeTokenTransfer,
 } from "@/contracts/SampleJetton_SampleJetton";
-import { jettonContent } from "@/constants/jetton";
+import {
+  deployerAddress,
+  jettonContent,
+  jettonMaster,
+  testAddress,
+} from "@/constants/jetton";
 
 // get the decentralized RPC endpoint
 
@@ -37,18 +42,6 @@ export default function CreateJetton() {
   const connectionRestored = useIsConnectionRestored();
   const wallet = useTonWallet();
   const { state, open, close } = useTonConnectModal();
-  const jettonMaster = Address.parse(
-    "EQD4pOfNjdDA_-MzVGH4aqfNjIHxKrJ_RBLWXg9Bd07EKi8B",
-  );
-  const NewOwner_Address = Address.parse(
-    "UQD6mORg_6kpV0rIS7XMGDBW0D3qWk2JtW5v8xH9fyAQoPMB",
-  ); // 🔴 Owner should usually be the deploying wallet's address.
-  const deployerAddress = Address.parse(
-    "UQCXlMnuTIamRK7Sv7mAWbFnvJX7DKwmpPa2M_w3QGWBrT8Y",
-  );
-  const testAddress = Address.parse(
-    "UQDbbiiaZmmIQa2FLRlQvLDbzRqWVJK6EIbXsV2WLYS2QI8b",
-  );
 
   const initJetton = useCallback(async () => {
     if (!wallet) return;
@@ -147,8 +140,6 @@ export default function CreateJetton() {
 
   return (
     <div className="flex h-[100vh] w-full flex-col items-center gap-1 p-1">
-      <TonConnectButton className="w-full" />
-
       <Button handleClick={() => initJetton()}>Test</Button>
     </div>
   );
