@@ -56,7 +56,7 @@ export default function Exchange() {
         sdk.sender!.address!,
       );
 
-      let packed = beginCell()
+      let mintBody = beginCell()
         .store(
           storeMint({
             $$type: "Mint",
@@ -64,17 +64,28 @@ export default function Exchange() {
           }),
         )
         .endCell();
-      const transaction = {
-        validUntil: Math.floor(Date.now() / 1000) + 360,
-        messages: [
-          {
-            address: myJettonWallet.toRawString(),
-            amount: "10000000", // 0.01 Ton
-            payload: packed.toBoc().toString("base64"), // payload with comment in body
-          },
-        ],
-      };
-      const result = await tonConnectUI.sendTransaction(transaction as any);
+
+      //   const transaction = {
+      //     validUntil: Math.floor(Date.now() / 1000) + 360,
+      //     messages: [
+      //       {
+      //         //但使用JettonMaster會無法顯示交易
+      //         address: jettonMaster,
+      //         amount: "100000000", // 0.1 Ton
+      //         //目前問題直接用mintBody的tonConnectUI會呼叫錯誤
+      //         payload: mintBody.toBoc().toString("base64"), // payload with comment in body
+      //       },
+      //     ],
+      //   };
+      //   const result = await tonConnectUI.sendTransaction(transaction as any);
+      const result = await contract.send(
+        provider.sender,
+        { value: toNano(0.1) },
+        {
+          $$type: "Mint",
+          amount: toNano(1),
+        },
+      );
 
       console.log("✨ result\n" + result);
     } catch (e) {
@@ -92,7 +103,7 @@ export default function Exchange() {
       messages: [
         {
           address: testAddress, // TonKeeper "Test" address on mainnet
-          amount: "10000000", // 0.01 Ton
+          amount: toNano(0.01), // 0.01 Ton
           payload: body.toBoc().toString("base64"), // payload with comment in body
         },
       ],
@@ -126,10 +137,10 @@ export default function Exchange() {
           className="h-10 w-full rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
           handleClick={() => sendTon()}
         >
-          Send transaction
+          Transfer 0.01 Ton to Team
         </Button>
       )}
-      <Button handleClick={() => initJetton()}>Test</Button>
+      <Button handleClick={() => initJetton()}>Mint 1 SYN token</Button>
     </div>
   );
 }
