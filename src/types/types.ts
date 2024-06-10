@@ -51,12 +51,13 @@ export type EventType =
   | "connectWallet"
   | "dailyGame"
   | "dailyGameHighScore";
+//TODO: 新增事件上限
 export enum EventEnum {
   firstTest = "firstTest",
   aiChat = "aiChat",
   inviteFriends = "inviteFriends",
   overFiveFriends = "overFiveFriends", //TODO: add this event
-  connectWallet = "connectWallet", //TODO: add this event
+  connectWallet = "connectWallet",
   dailyGame = "dailyGame",
   dailyGameHighScore = "dailyGameHighScore",
 }

@@ -8,6 +8,7 @@ import { Provider } from "@/components/Provider";
 import Layout from "@/components/Layout/Layout";
 import { TmaSDKLoader } from "@/components/TmaSDKLoader";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
+import { useEffect } from "react";
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "@/components/Provider";
-import { tableMap } from "@/types/types";
+import { EventEnum, tableMap } from "@/types/types";
 import { supabase } from "@/utils/supabase";
 import { useBackButton } from "@tma.js/sdk-react";
 import Card from "@/components/Card";
@@ -43,10 +43,10 @@ const question = [
   },
 ];
 export default function Test() {
+  const { userTG, userData, goPage, updateUserToken } = useContext(Context);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(new Array(8).fill(0.5));
   const [loading, setLoading] = useState(false);
-  const { userTG, userData, goPage } = useContext(Context);
   const backButton = useBackButton();
   const onBackButtonClick = () => {
     goPage("/");
@@ -77,6 +77,7 @@ export default function Test() {
   };
   const handleSubmit = async () => {
     await updateUserScore(score, userTG?.id as number);
+    await updateUserToken(Number(userData.user_id), EventEnum.firstTest);
     goPage("/art");
   };
 

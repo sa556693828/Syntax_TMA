@@ -10,7 +10,7 @@ export const jettonParams = {
 // Create content Cell
 export let jettonContent = buildOnchainMetadata(jettonParams);
 export const jettonMaster = Address.parse(
-  "EQAKr2dtVGhmPEBsZzBpCUDCFXh_N3_PoEaOtdnRlZz5NLwj",
+  "EQAaJ64QMTIWOqDz3WMYWUi56SvfBIG21MbausUb_PlBqCZ6",
 );
 export const NewOwner_Address = Address.parse(
   "UQD6mORg_6kpV0rIS7XMGDBW0D3qWk2JtW5v8xH9fyAQoPMB",
