@@ -110,13 +110,13 @@ export default function Home() {
         <ProfileTab />
       </div>
       <div className="relative h-[400px] w-full rounded-lg uppercase">
-        {userData && userData.user_id && userData.score && (
+        {/* {userData && userData.user_id && userData.score && (
           <Box
             userID={userData.user_id}
             fullScreen={true}
             userScore={userData.score as any}
           />
-        )}
+        )} */}
         <div className="absolute -bottom-8 flex w-full items-end justify-between px-4 text-white">
           <div className="flex items-end gap-4">
             <a className="z-20 text-[80px] leading-none">

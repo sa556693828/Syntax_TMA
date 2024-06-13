@@ -107,67 +107,84 @@ export default function Decode() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="relative flex h-full min-h-[100dvh] w-full flex-col items-center justify-center gap-1 p-1">
-      <Card className="flex h-full flex-col items-start justify-start gap-4 p-12">
-        <GridDot count={8} />
-        <a className="flex-1 whitespace-pre-wrap text-black">
-          {question[questionIndex].title}
-        </a>
-        <div className="relative z-50 size-full h-[286px] rounded-md bg-white">
-          {userData && userData.user_id && viewArt && (
+    <div className="relative flex h-full min-h-[100vh] w-full flex-col items-center justify-center gap-1 p-1">
+      {questionIndex === 8 ? (
+        <>
+          <Card className="flex h-full flex-col flex-1 items-start justify-start gap-4 p-12">
+            <GridDot count={8} />
+            <a className="whitespace-pre-wrap text-black">
+              {`IN THE FUZZY, INACCURATE SYSTEM OF SYNTAX, YOU’VE GOTTEN A DECODE SCORE OF`}
+            </a>
+            <div className="w-full text-center">
+              <a className="text-[128px] leading-[150%]">{Math.ceil(testScore)}</a>
+            </div>
+            <a className="text-xs">{`(PSST: ON GOOD DAYS, I SCORE ABOUT A 60. THANKS FOR PLAYING!)`}</a>
+          </Card>
+        </>
+      ) : (
+        <>
+          <Card className="flex h-full flex-col items-start justify-start gap-4 p-12">
+            <GridDot count={8} />
+            <a className="flex-1 whitespace-pre-wrap text-black">
+              {question[questionIndex].title}
+            </a>
+            <div className="relative z-50 size-full h-[286px] rounded-md bg-white">
+              {/* {userData && userData.user_id && viewArt && (
             <Box
               userID={userData.user_id}
               userScore={score}
               fullScreen={true}
             />
-          )}
-        </div>
-      </Card>
-      <div className="flex w-full flex-col gap-[10px] bg-[#333] p-12">
-        <div className="relative w-full">
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.0001"
-            defaultValue={0.5}
-            value={userValue}
-            className={`relative h-12 appearance-none rounded-lg bg-transparent`}
-            onChange={(e) => handleChange(e)}
-          />
-          <div
-            className={`pointer-events-none absolute -top-[10px] flex flex-col ${Math.round(userValue * 100) === 100 ? "items-end" : "items-center"} left-[${Math.round(userValue * 100)}%] -translate-x-[${Math.round(userValue * 100)}%] text-white `}
-          >
-            <a
-              className={`${Math.round(userValue * 100) === 100 ? "-mr-1" : Math.round(userValue * 100) === 0 ? "-ml-[2px]" : ""}`}
-            >
-              {Math.round(userValue * 100)}
-            </a>
-            <div className="h-[2px] w-4 rounded bg-white" />
+          )} */}
+            </div>
+          </Card>
+          <div className="flex w-full flex-col gap-[10px] bg-[#333] p-12">
+            <div className="relative w-full">
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.0001"
+                defaultValue={0.5}
+                value={userValue}
+                className={`relative h-12 appearance-none rounded-lg bg-transparent`}
+                onChange={(e) => handleChange(e)}
+              />
+              <div
+                className={`pointer-events-none absolute -top-[10px] flex flex-col ${Math.round(userValue * 100) === 100 ? "items-end" : "items-center"} left-[${Math.round(userValue * 100)}%] -translate-x-[${Math.round(userValue * 100)}%] text-white `}
+              >
+                <a
+                  className={`${Math.round(userValue * 100) === 100 ? "-mr-1" : Math.round(userValue * 100) === 0 ? "-ml-[2px]" : ""}`}
+                >
+                  {Math.round(userValue * 100)}
+                </a>
+                <div className="h-[2px] w-4 rounded bg-white" />
+              </div>
+            </div>
+            <div className="flex w-full justify-between">
+              <a className="text-xs text-white opacity-60">
+                {question[questionIndex].value[0]}
+              </a>
+              <a className="text-xs text-white opacity-60">
+                {question[questionIndex].value[1]}
+              </a>
+            </div>
           </div>
-        </div>
-        <div className="flex w-full justify-between">
-          <a className="text-xs text-white opacity-60">
-            {question[questionIndex].value[0]}
-          </a>
-          <a className="text-xs text-white opacity-60">
-            {question[questionIndex].value[1]}
-          </a>
-        </div>
-      </div>
+        </>
+      )}
       <div className="h-[62px] w-full">
         <button
           className="flex h-full w-full items-center justify-center rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
           onClick={
-            questionIndex === question.length - 1
+            questionIndex === question.length
               ? () => handleSubmit()
               : () => handleNext()
           }
         >
           {loading ? (
             <div className="loader" />
-          ) : questionIndex === question.length - 1 ? (
-            "GENERATE MY SYNTAX"
+          ) : questionIndex === question.length ? (
+            "DONE"
           ) : (
             "NEXT"
           )}
