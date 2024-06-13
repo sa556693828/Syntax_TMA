@@ -130,7 +130,6 @@ export default function Exchange() {
       console.log(e);
     }
   }, [checkTx]);
-  // write a interval timer to check the transaction status
 
   const sendTon = async () => {
     const body = beginCell()
@@ -196,7 +195,7 @@ export default function Exchange() {
               <GridDot count={8} />
               <a>{`MINTING... PLEASE CHECK YOUR TON WALLET AFTER 2 MINUTES.`}</a>
             </Card>
-            <Button className="h-[62px] uppercase flex-shrink-0 flex items-center justify-center" handleClick={() => setMinting(true)}>{loading ? <div className="loader" /> : "Return"}</Button>
+            <Button className="h-[62px] uppercase flex-shrink-0 flex items-center justify-center" disabled={loading} handleClick={loading ? () => { } : () => setMinting(true)}>{loading ? <div className="loader" /> : "Return"}</Button>
           </div>
         ) : (
           <div className="flex w-full flex-col gap-1">
