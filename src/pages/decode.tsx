@@ -129,13 +129,13 @@ export default function Decode() {
               {question[questionIndex].title}
             </a>
             <div className="relative z-50 size-full h-[286px] rounded-md bg-white">
-              {/* {userData && userData.user_id && viewArt && (
-            <Box
-              userID={userData.user_id}
-              userScore={score}
-              fullScreen={true}
-            />
-          )} */}
+              {userData && userData.user_id && viewArt && (
+                <Box
+                  userID={userData.user_id}
+                  userScore={score}
+                  fullScreen={true}
+                />
+              )}
             </div>
           </Card>
           <div className="flex w-full flex-col gap-[10px] bg-[#333] p-12">
