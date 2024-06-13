@@ -172,7 +172,12 @@ export default function Exchange() {
       setMintAmount(value);
     }
   };
-
+  const disConnect = async () => {
+    await tonConnectUI.disconnect()
+  }
+  const handleCheckTon = () => {
+    window.open(`https://tonviewer.com/${userFriendlyAddress}`, "_blank");
+  };
   useEffect(() => {
     bb.show();
     bb.on("click", onBackButtonClick);
@@ -206,7 +211,7 @@ export default function Exchange() {
           <div className="flex w-full flex-col gap-1">
             <InfoCard className="h-[82px]">
               <a>wallet:</a>
-              <a className="font-bold">{concatAddress(userFriendlyAddress)}</a>
+              <a className="font-bold underline underline-offset-2 cursor-pointer" onClick={handleCheckTon}>{concatAddress(userFriendlyAddress)}</a>
             </InfoCard>
             <InfoCard className="h-[82px]">
               <a>points:</a>
@@ -251,11 +256,17 @@ export default function Exchange() {
             >
               Mint
             </Button>
+            <Button
+              className="h-[62px] uppercase"
+              handleClick={() => disConnect()}
+            >
+              Disconnect
+            </Button>
           </div>
         )
       ) : (
         <>
-          <Card className="mb-1 flex h-full flex-col items-start justify-center gap-4 p-12">
+          <Card className="mb-1 flex h-full flex-1 flex-col items-start justify-center gap-4 p-12">
             <GridDot count={8} />
             <a className="whitespace-pre-wrap text-black">
               {`WELCOME TO THE SYNTKN EXCHANGE. `}
