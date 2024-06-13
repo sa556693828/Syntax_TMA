@@ -16,7 +16,7 @@ export const Context = createContext<{
   userTG: UserTG;
   userData: UserData;
   reFetchUserData: () => void;
-  updateUserToken: (userId: number, event: EventType, amount: number) => void;
+  updateUserToken: (userId: number, event: EventType, amount?: number) => void;
 }>({
   goPage: () => { },
   userTG: {
