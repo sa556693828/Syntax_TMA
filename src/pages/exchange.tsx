@@ -42,6 +42,8 @@ export default function Exchange() {
   const [txHash, setTxHash] = useState<string | null>(null);
   const [checkingTx, setCheckingTx] = useState(false);
   const [mintAmount, setMintAmount] = useState(0);
+  const [minting, setMinting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const checkTx = useCallback(async (initialTxHash: string) => {
     const url = `https://tonapi.io/v2/blockchain/accounts/${jettonMaster}/transactions?after_lt=0&sort_order=desc`;
@@ -64,6 +66,7 @@ export default function Exchange() {
       const intervalId = setInterval(async () => {
         const isDifferent = await checkTx(txHash);
         if (isDifferent) {
+          setLoading(false);
           clearInterval(intervalId);
         }
       }, 5000); // 每兩秒檢查一次
@@ -77,6 +80,8 @@ export default function Exchange() {
     const url = `https://tonapi.io/v2/blockchain/accounts/${jettonMaster}/transactions?after_lt=0&sort_order=desc`;
 
     try {
+      setMinting(true);
+      setLoading(true);
       const response = await axios.get(url);
       const initialTxHash = response.data.transactions[0].hash;
       const sdk = await provider.sdk;
@@ -175,7 +180,7 @@ export default function Exchange() {
   }, []);
 
   return (
-    <div className="flex h-full min-h-[100vh] w-full flex-col items-center bg-black px-1 pb-1">
+    <div className={`flex ${minting ? "h-[100vh]" : "h-full"} min-h-[100vh] w-full flex-col items-center bg-black px-1 pb-1`}>
       <div className="z-20 flex h-24 w-full flex-shrink-0 items-center justify-center bg-transparent px-6 text-lg">
         <FaArrowLeftLong
           size={20}
@@ -185,55 +190,65 @@ export default function Exchange() {
         <a className="text-nowrap">STX EXCHANGE</a>
       </div>
       {wallet ? (
-        <div className="flex w-full flex-col gap-1">
-          <InfoCard className="h-[82px]">
-            <a>wallet:</a>
-            <a className="font-bold">{concatAddress(userFriendlyAddress)}</a>
-          </InfoCard>
-          <InfoCard className="h-[82px]">
-            <a>points:</a>
-            <a className="font-bold">{`${userData?.tokens} PTS`}</a>
-          </InfoCard>
-          <InfoCard className="h-[82px] bg-white text-black">
-            <a>exchange:</a>
-            <div className="relative flex w-full items-center justify-end gap-3">
-              <input
-                value={mintAmount}
-                type="text"
-                onChange={handleChange}
-                className="h-full w-full appearance-none bg-transparent text-right font-bold ring-transparent"
-              />
-              <a className="pt-[2px] font-bold">PTS</a>
-            </div>
-          </InfoCard>
-          <InfoCard className="h-[82px] bg-greyBg text-black">
-            <a>receive:</a>
-            <a className="font-bold">{`${mintAmount / 10} STX`}</a>
-          </InfoCard>
-          <InfoCard className="h-[82px]">
-            <a>name:</a>
-            <a className="font-bold">syntax</a>
-          </InfoCard>
-          <InfoCard className="h-[82px]">
-            <a>symbol:</a>
-            <a className="font-bold">STX</a>
-          </InfoCard>
-          <InfoCard className="h-[82px]">
-            <a>type:</a>
-            <a className="font-bold">jetton</a>
-          </InfoCard>
-          <InfoCard className="h-[82px]">
-            <a>gas:</a>
-            <a className="font-bold">{`< 0.05 ton`}</a>
-          </InfoCard>
-          <Button
-            className="h-[62px] uppercase"
-            disabled={mintAmount === 0 || !mintAmount}
-            handleClick={() => mintJetton()}
-          >
-            Mint
-          </Button>
-        </div>
+        minting ? (
+          <div className="flex w-full h-full flex-col gap-1">
+            <Card className="flex h-full flex-col items-start justify-center gap-4 p-12">
+              <GridDot count={8} />
+              <a>{`MINTING... PLEASE CHECK YOUR TON WALLET AFTER 2 MINUTES.`}</a>
+            </Card>
+            <Button className="h-[62px] uppercase flex-shrink-0 flex items-center justify-center" handleClick={() => setMinting(true)}>{loading ? <div className="loader" /> : "Return"}</Button>
+          </div>
+        ) : (
+          <div className="flex w-full flex-col gap-1">
+            <InfoCard className="h-[82px]">
+              <a>wallet:</a>
+              <a className="font-bold">{concatAddress(userFriendlyAddress)}</a>
+            </InfoCard>
+            <InfoCard className="h-[82px]">
+              <a>points:</a>
+              <a className="font-bold">{`${userData?.tokens} PTS`}</a>
+            </InfoCard>
+            <InfoCard className="h-[82px] bg-white text-black">
+              <a>exchange:</a>
+              <div className="relative flex w-full items-center justify-end gap-3">
+                <input
+                  value={mintAmount}
+                  type="text"
+                  onChange={handleChange}
+                  className="h-full w-full appearance-none bg-transparent text-right font-bold ring-transparent"
+                />
+                <a className="pt-[2px] font-bold">PTS</a>
+              </div>
+            </InfoCard>
+            <InfoCard className="h-[82px] bg-greyBg text-black">
+              <a>receive:</a>
+              <a className="font-bold">{`${mintAmount / 10} STX`}</a>
+            </InfoCard>
+            <InfoCard className="h-[82px]">
+              <a>name:</a>
+              <a className="font-bold">syntax</a>
+            </InfoCard>
+            <InfoCard className="h-[82px]">
+              <a>symbol:</a>
+              <a className="font-bold">STX</a>
+            </InfoCard>
+            <InfoCard className="h-[82px]">
+              <a>type:</a>
+              <a className="font-bold">jetton</a>
+            </InfoCard>
+            <InfoCard className="h-[82px]">
+              <a>gas:</a>
+              <a className="font-bold">{`< 0.05 ton`}</a>
+            </InfoCard>
+            <Button
+              className="h-[62px] uppercase"
+              disabled={mintAmount === 0 || !mintAmount}
+              handleClick={() => mintJetton()}
+            >
+              Mint
+            </Button>
+          </div>
+        )
       ) : (
         <>
           <Card className="mb-1 flex h-full flex-col items-start justify-center gap-4 p-12">
