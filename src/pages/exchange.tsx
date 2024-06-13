@@ -71,6 +71,7 @@ export default function Exchange() {
           await updateUserToken(Number(userData.user_id), EventEnum.buyToken, mintAmount);
           toast.success("Mint success!");
           setLoading(false);
+          setMintAmount(0);
           clearInterval(intervalId);
         }
       }, 5000); // 每兩秒檢查一次
@@ -79,7 +80,7 @@ export default function Exchange() {
   }, [checkingTx, checkTx, txHash]);
 
   const mintJetton = useCallback(async () => {
-    if (!wallet || !mintAmount || userData?.tokens || mintAmount > (userData?.tokens || 0)) return;
+    if (!wallet || !mintAmount || !userData?.tokens || mintAmount > (userData?.tokens || 0)) return;
     const provider = await assetsConnectSDK(tonConnectUI as any);
     const url = `https://tonapi.io/v2/blockchain/accounts/${jettonMaster}/transactions?after_lt=0&sort_order=desc`;
 
