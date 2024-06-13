@@ -50,7 +50,8 @@ export type EventType =
   | "overFiveFriends"
   | "connectWallet"
   | "dailyGame"
-  | "dailyGameHighScore";
+  | "dailyGameHighScore"
+  | "buyToken";
 //TODO: 新增事件上限
 export enum EventEnum {
   firstTest = "firstTest",
@@ -60,4 +61,5 @@ export enum EventEnum {
   connectWallet = "connectWallet",
   dailyGame = "dailyGame",
   dailyGameHighScore = "dailyGameHighScore",
+  buyToken = "buyToken",
 }

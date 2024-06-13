@@ -4,13 +4,13 @@ import { Address } from "@ton/core";
 export const jettonParams = {
   name: "Syntax",
   description: "Syntax jetton token",
-  symbol: "STN",
-  image: "https://syntax-tma.vercel.app/jetton.svg",
+  symbol: "STX",
+  image: "https://syntax-tma.vercel.app/jettonIcon.svg",
 };
 // Create content Cell
 export let jettonContent = buildOnchainMetadata(jettonParams);
 export const jettonMaster = Address.parse(
-  "EQAaJ64QMTIWOqDz3WMYWUi56SvfBIG21MbausUb_PlBqCZ6",
+  "EQDInB9WWBPGu5GMrZTSu9mbIZHRN5GtJ1uys1MyltkKwYg4",
 );
 export const NewOwner_Address = Address.parse(
   "UQD6mORg_6kpV0rIS7XMGDBW0D3qWk2JtW5v8xH9fyAQoPMB",

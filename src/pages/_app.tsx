@@ -9,6 +9,7 @@ import Layout from "@/components/Layout/Layout";
 import { TmaSDKLoader } from "@/components/TmaSDKLoader";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,6 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <TmaSDKLoader>
           <Provider>
+            <Toaster />
             <Layout>
               <Component {...pageProps} />
             </Layout>

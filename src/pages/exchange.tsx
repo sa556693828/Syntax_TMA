@@ -26,10 +26,12 @@ import GridDot from "@/components/ui/gridDot";
 import Card from "@/components/Card";
 import { concatAddress } from "@/utils/helpers";
 import InfoCard from "@/components/InfoCard";
+import { EventEnum } from "@/types/types";
+import { toast } from "react-hot-toast";
 
 export default function Exchange() {
   const router = useRouter();
-  const { goPage, userData } = useContext(Context);
+  const { goPage, userData, updateUserToken } = useContext(Context);
   const bb = useBackButton();
   const [tonConnectUI, setOptions] = useTonConnectUI();
   const userFriendlyAddress = useTonAddress();
@@ -66,6 +68,8 @@ export default function Exchange() {
       const intervalId = setInterval(async () => {
         const isDifferent = await checkTx(txHash);
         if (isDifferent) {
+          await updateUserToken(Number(userData.user_id), EventEnum.buyToken, mintAmount);
+          toast.success("Mint success!");
           setLoading(false);
           clearInterval(intervalId);
         }
@@ -75,7 +79,7 @@ export default function Exchange() {
   }, [checkingTx, checkTx, txHash]);
 
   const mintJetton = useCallback(async () => {
-    if (!wallet) return;
+    if (!wallet || !mintAmount || userData?.tokens || mintAmount > (userData?.tokens || 0)) return;
     const provider = await assetsConnectSDK(tonConnectUI as any);
     const url = `https://tonapi.io/v2/blockchain/accounts/${jettonMaster}/transactions?after_lt=0&sort_order=desc`;
 
@@ -195,7 +199,7 @@ export default function Exchange() {
               <GridDot count={8} />
               <a>{`MINTING... PLEASE CHECK YOUR TON WALLET AFTER 2 MINUTES.`}</a>
             </Card>
-            <Button className="h-[62px] uppercase flex-shrink-0 flex items-center justify-center" disabled={loading} handleClick={loading ? () => { } : () => setMinting(true)}>{loading ? <div className="loader" /> : "Return"}</Button>
+            <Button className="h-[62px] uppercase flex-shrink-0 flex items-center justify-center" disabled={loading} handleClick={loading ? () => { } : () => setMinting(false)}>{loading ? <div className="loader" /> : "Return"}</Button>
           </div>
         ) : (
           <div className="flex w-full flex-col gap-1">
@@ -241,7 +245,7 @@ export default function Exchange() {
             </InfoCard>
             <Button
               className="h-[62px] uppercase"
-              disabled={mintAmount === 0 || !mintAmount}
+              disabled={mintAmount === 0 || !mintAmount || mintAmount > (userData?.tokens || 0)}
               handleClick={() => mintJetton()}
             >
               Mint

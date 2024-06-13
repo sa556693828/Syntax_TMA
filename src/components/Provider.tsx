@@ -16,9 +16,9 @@ export const Context = createContext<{
   userTG: UserTG;
   userData: UserData;
   reFetchUserData: () => void;
-  updateUserToken: (userId: number, event: EventType) => void;
+  updateUserToken: (userId: number, event: EventType, amount: number) => void;
 }>({
-  goPage: () => {},
+  goPage: () => { },
   userTG: {
     allowsWriteToPm: false,
     firstName: "",
@@ -46,8 +46,8 @@ export const Context = createContext<{
     friends: [],
     tokens: null,
   },
-  reFetchUserData: () => {},
-  updateUserToken: () => {},
+  reFetchUserData: () => { },
+  updateUserToken: () => { },
 });
 
 export const Provider = ({ children }: { children: any }) => {
@@ -96,15 +96,26 @@ export const Provider = ({ children }: { children: any }) => {
   const reFetchUserData = () => {
     setReGetUserData(!reGetUserData);
   };
-  const updateUserToken = async (userId: number, event: EventType) => {
+  const updateUserToken = async (userId: number, event: EventType, amount?: number) => {
     const addPoint = pointList[event];
-    if (!addPoint || !userData) return;
-    const totalPoint = userData.tokens ? userData.tokens + addPoint : addPoint;
+    if (!userData) return;
+    let totalPoint: number;
+    if (event === EventEnum.buyToken) {
+      if (amount === undefined) {
+        console.error("Amount is required for buying tokens");
+        return;
+      }
+      totalPoint = userData.tokens ? userData.tokens - amount : -amount;
+    } else {
+      totalPoint = userData.tokens ? userData.tokens + addPoint : addPoint;
+    }
+
     try {
       const { error } = await supabase
         .from(tableMap.users)
         .update({ tokens: totalPoint })
         .eq("user_id", userId);
+
       if (!error) {
         reFetchUserData();
       } else {
@@ -115,6 +126,7 @@ export const Provider = ({ children }: { children: any }) => {
       console.log(e);
     }
   };
+
 
   useEffect(() => {
     async function getUser() {
