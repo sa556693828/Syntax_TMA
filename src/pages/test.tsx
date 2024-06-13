@@ -90,15 +90,13 @@ export default function Test() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  //TODO:轉場動畫
   return (
     <div className="relative flex h-[100dvh] w-full flex-col items-center justify-center gap-1 p-1">
       <Card className="flex h-full flex-col items-start justify-start gap-4 p-12">
         <GridDot count={questionIndex + 1} />
         <a className="flex-1">{question[questionIndex].title}</a>
-        <a className="text-xs opacity-60">{`${
-          questionIndex + 1
-        }/${question.length}`}</a>
+        <a className="text-xs opacity-60">{`${questionIndex + 1
+          }/${question.length}`}</a>
       </Card>
       <div className="flex w-full flex-col gap-[10px] bg-[#333] p-12">
         <div className="relative w-full">

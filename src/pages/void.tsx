@@ -6,6 +6,9 @@ import axios from "axios";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { useRouter } from "next/router";
 import { EventEnum } from "@/types/types";
+import bg from "@/assets/bgV.svg";
+import Image from "next/image";
+import Button from "@/components/ui/button";
 
 interface Prompt {
   model: string;
@@ -73,6 +76,12 @@ export default function Void() {
 
   return (
     <div className="flex h-[100vh] w-full flex-col items-center bg-black">
+      <Image
+        src={bg}
+        alt="bg"
+        layout="fill"
+        className="absolute left-0 top-0 z-10 object-cover object-center"
+      />
       <div className="z-20 flex h-24 w-full items-center justify-center bg-transparent px-6 text-lg">
         <FaArrowLeftLong
           size={20}
@@ -84,41 +93,36 @@ export default function Void() {
         </a>
       </div>
       {!inputMode && (
-        <div className="flex h-full w-full flex-col items-center justify-center px-1">
+        <div className="z-20 flex h-full w-full flex-col items-center justify-center px-1">
           <a className="text-xs uppercase tracking-[1.92px]">
-            you stare on to the void
+            you stare in to the void
           </a>
-          <button
-            onClick={() => setInputMode(!inputMode)}
-            className="my-20 h-[62px] w-full rounded-md border bg-white text-lg text-blackBg hover:border-white/20 hover:bg-white/80"
+          <Button
+            handleClick={() => setInputMode(!inputMode)}
+            className="my-20 h-[62px]"
           >
-            TALK TO THE VOID
-          </button>
+            {`CALL INTO THE VOID (2)`}
+          </Button>
           <a className="text-xs uppercase tracking-[1.92px]">
             and the void stares back
           </a>
         </div>
       )}
       {inputMode && (
-        <div className="flex h-full w-full flex-col items-center justify-between gap-4 overflow-hidden px-1 pb-16 pt-14 text-center">
+        <div className="z-20 flex h-full w-full flex-col items-center justify-between gap-4 overflow-hidden px-1 pt-14 text-center">
           <a className="max-w-[300px] overflow-y-auto text-center text-lg">
             {aiRes}
           </a>
           <div className="flex w-full flex-col items-center justify-end gap-9">
             <a className="text-xs opacity-60">{`(${userInput.length}/300)`}</a>
-            <div className="relative w-full">
-              <input
-                className="h-14 w-full rounded-md border border-blackBg bg-black p-2 caret-white outline-none"
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-              />
-              <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-lg uppercase"
-                onClick={aiAPI}
-              >
-                Send
-              </button>
-            </div>
+            <input
+              className="h-14 w-full rounded-md border border-blackBg bg-black p-2 caret-white outline-none"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+            />
+            <Button handleClick={() => aiAPI()} className="h-[62px]">
+              {`CALL INTO THE VOID (2)`}
+            </Button>
           </div>
         </div>
       )}

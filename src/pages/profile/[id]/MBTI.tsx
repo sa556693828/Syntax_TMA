@@ -31,29 +31,29 @@ export default function MBTI() {
     {
       title: ["Nature", "Nurture"],
       value: [
-        <GridDot count={0} size="big" color="white" key={0} />,
-        <GridDot count={5} size="big" color="white" key={1} />,
+        <GridDot type='nature' size="big" color="white" key={0} />,
+        <GridDot type='nurture' size="big" color="white" key={1} />,
       ],
     },
     {
       title: ["Stability", "Change"],
       value: [
-        <GridDot count={0} size="big" color="white" key={2} />,
-        <GridDot count={5} size="big" color="white" key={3} />,
+        <GridDot type='stability' size="big" color="white" key={2} />,
+        <GridDot type='change' size="big" color="white" key={3} />,
       ],
     },
     {
       title: ["Pessimism", "Optimism"],
       value: [
-        <GridDot count={0} size="big" color="white" key={4} />,
-        <GridDot count={5} size="big" color="white" key={5} />,
+        <GridDot type='pessimism' size="big" color="white" key={4} />,
+        <GridDot type='optimism' size="big" color="white" key={5} />,
       ],
     },
     {
       title: ["Past", "Future"],
       value: [
-        <GridDot count={0} size="big" color="white" key={6} />,
-        <GridDot count={5} size="big" color="white" key={7} />,
+        <GridDot type='past' size="big" color="white" key={6} />,
+        <GridDot type='future' size="big" color="white" key={7} />,
       ],
     },
   ];

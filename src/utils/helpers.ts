@@ -1,4 +1,5 @@
 import { UserData } from "@/types/types";
+import { Address } from "@ton/core";
 
 export function getUsernameOrName({
   user_id,
@@ -23,4 +24,7 @@ export function getUsernameOrName({
   }
 
   return `${user_id}`;
+}
+export function concatAddress(address: string, head = 6, tail = 4): string {
+  return address.slice(0, head) + "..." + address.slice(-tail);
 }
