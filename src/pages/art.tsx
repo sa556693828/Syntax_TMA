@@ -112,17 +112,6 @@ export default function Art() {
           />
         )}
       </Card>
-      <div
-        className={`relative flex h-[382px] w-full cursor-pointer flex-col justify-end overflow-hidden rounded-lg bg-transparent uppercase delay-1000 duration-1000 hover:opacity-80 ${revealed[2] ? "opacity-100" : "opacity-0"} ease-in-out`}
-      >
-        {userData && userData.user_id && userData.score && (
-          <Box
-            userID={userData.user_id}
-            userScore={[userData.score[0] > 0.5 ? 0 : 1, ...userData.score.slice(1)]}
-            overScreen={true}
-          />
-        )}
-      </div>
       <Card
         className={`flex flex-col items-start justify-start gap-4 p-12 transition-all delay-1000 duration-1000 ${revealed[1] ? "opacity-100" : "opacity-0"} ease-in-out`}
       >
@@ -135,7 +124,7 @@ export default function Art() {
         {userData && userData.user_id && userData.score && (
           <Box
             userID={userData.user_id}
-            userScore={[...userData.score.slice(0, 2), userData.score[2] > 0.5 ? 0 : 1, ...userData.score.slice(3)]}
+            userScore={[userData.score[0] > 0.5 ? 0 : 1, ...userData.score.slice(1)]}
             overScreen={true}
           />
         )}
@@ -146,6 +135,17 @@ export default function Art() {
         <GridDot count={8} />
         <a>AND THIS IS HOW I WOULD HAVE SEEN YOU AS SOMEONE <b>{userArg2}</b>:</a>
       </Card>
+      <div
+        className={`relative flex h-[382px] w-full cursor-pointer flex-col justify-end overflow-hidden rounded-lg bg-transparent uppercase delay-1000 duration-1000 hover:opacity-80 ${revealed[2] ? "opacity-100" : "opacity-0"} ease-in-out`}
+      >
+        {userData && userData.user_id && userData.score && (
+          <Box
+            userID={userData.user_id}
+            userScore={[...userData.score.slice(0, 2), userData.score[2] > 0.5 ? 0 : 1, ...userData.score.slice(3)]}
+            overScreen={true}
+          />
+        )}
+      </div>
       <div
         className={`w-full space-y-1 delay-1000 duration-1000 ${revealed[4] ? "opacity-100" : "opacity-0"} ease-in-out`}
       >
