@@ -1,7 +1,4 @@
-import { Context } from "@/components/Provider";
-import { tableMap } from "@/types/types";
-import { createClient } from "@supabase/supabase-js";
-import { useContext } from "react";
+import {createClient} from "@supabase/supabase-js";
 
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
