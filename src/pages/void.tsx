@@ -58,7 +58,7 @@ export default function Void() {
           "Content-Type": "application/json",
         },
       });
-      console.log(res.data);
+      // console.log(res.data);
       setAiRes(res.data.response);
       if (res.data) {
         setTimeout(() => {
@@ -83,13 +83,13 @@ export default function Void() {
       backButton.hide();
     };
   }, []);
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      import("eruda").then((module) => {
-        module.default.init();
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     import("eruda").then((module) => {
+  //       module.default.init();
+  //     });
+  //   }
+  // }, []);
   return (
     <div className="flex h-[100vh] w-full flex-col items-center bg-black">
       <Image
