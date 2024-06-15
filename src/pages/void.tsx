@@ -28,7 +28,7 @@ export default function Void() {
   const [userInput, setUserInput] = useState("");
   const [aiRes, setAiRes] = useState("");
   const router = useRouter();
-  const backButton = useBackButton();
+  // const backButton = useBackButton();
   const onBackButtonClick = () => {
     goPage("/");
   };
@@ -75,14 +75,14 @@ export default function Void() {
       }, 2000);
     }
   };
-  useEffect(() => {
-    backButton.show();
-    backButton.on("click", onBackButtonClick);
-    return () => {
-      backButton.off("click", onBackButtonClick);
-      backButton.hide();
-    };
-  }, []);
+  // useEffect(() => {
+  //   backButton.show();
+  //   backButton.on("click", onBackButtonClick);
+  //   return () => {
+  //     backButton.off("click", onBackButtonClick);
+  //     backButton.hide();
+  //   };
+  // }, []);
   // useEffect(() => {
   //   if (typeof window !== "undefined") {
   //     import("eruda").then((module) => {

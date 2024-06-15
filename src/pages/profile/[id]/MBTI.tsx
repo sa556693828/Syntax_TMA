@@ -62,7 +62,7 @@ export default function MBTI() {
   const id = router.query.id;
   const [targetUserData, setTargetUserData] = useState<UserData>();
   const isSelfMBTI = userData && Number(id) === userData.user_id;
-  const backButton = useBackButton();
+  // const backButton = useBackButton();
   const onBackButtonClick = () => {
     router.back();
   };
@@ -81,15 +81,15 @@ export default function MBTI() {
   useEffect(() => {
     getUserData();
   }, [id]);
-  useEffect(() => {
-    backButton.show();
-    backButton.on("click", onBackButtonClick);
-    return () => {
-      backButton.off("click", onBackButtonClick);
-      backButton.hide();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   backButton.show();
+  //   backButton.on("click", onBackButtonClick);
+  //   return () => {
+  //     backButton.off("click", onBackButtonClick);
+  //     backButton.hide();
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <div className="relative z-20 flex h-full w-full flex-col items-center gap-1 bg-black">

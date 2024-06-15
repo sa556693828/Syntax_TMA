@@ -19,8 +19,17 @@ interface MeFunction {
 }
 export default function Home() {
   const router = useRouter();
-  const initData = useInitData();
-  const { user: userTG } = initData as any;
+  // const initData = useInitData();
+  // const { user: userTG } = initData as any;
+  const userTG = {
+    allowsWriteToPm: false,
+    firstName: "",
+    id: 1298152745,
+    isPremium: false,
+    languageCode: "zh",
+    lastName: "",
+    username: "TestUser",
+  }
   const [userData, setUserData] = useState<UserData | null>(null);
   const [introMode, setIntroMode] = useState(false);
   const [loadingTime, setLoadingTime] = useState(false);
@@ -93,7 +102,7 @@ export default function Home() {
     //     module.default.init();
     //   });
     // }
-    postEvent("web_app_expand");
+    // postEvent("web_app_expand");
   }, []);
 
   if (!userData || !userData.score || !loadingTime) {
@@ -110,13 +119,13 @@ export default function Home() {
         <ProfileTab />
       </div>
       <div className="relative h-[400px] w-full rounded-lg uppercase">
-        {userData && userData.user_id && userData.score && (
+        {/* {userData && userData.user_id && userData.score && (
           <Box
             userID={userData.user_id}
             fullScreen={true}
             userScore={userData.score as any}
           />
-        )}
+        )} */}
         <div className="absolute -bottom-8 flex w-full items-end justify-between px-4 text-white">
           <div className="flex items-end gap-4">
             <a className="z-20 text-[80px] leading-none">
