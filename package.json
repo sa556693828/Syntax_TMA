@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/ssr": "latest",
     "@aws-crypto/sha256-js": "^5.2.0",
     "@orbs-network/ton-access": "^2.3.3",
     "@radix-ui/react-slot": "^1.0.2",
