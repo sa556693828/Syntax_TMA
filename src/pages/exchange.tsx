@@ -32,7 +32,7 @@ import { toast } from "react-hot-toast";
 export default function Exchange() {
   const router = useRouter();
   const { goPage, userData, updateUserToken } = useContext(Context);
-  const bb = useBackButton();
+  // const bb = useBackButton();
   const [tonConnectUI, setOptions] = useTonConnectUI();
   const userFriendlyAddress = useTonAddress();
   const connectionRestored = useIsConnectionRestored();
@@ -178,15 +178,15 @@ export default function Exchange() {
   const handleCheckTon = () => {
     window.open(`https://tonviewer.com/${userFriendlyAddress}`, "_blank");
   };
-  useEffect(() => {
-    bb.show();
-    bb.on("click", onBackButtonClick);
-    return () => {
-      bb.off("click", onBackButtonClick);
-      bb.hide();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   bb.show();
+  //   bb.on("click", onBackButtonClick);
+  //   return () => {
+  //     bb.off("click", onBackButtonClick);
+  //     bb.hide();
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <div className={`flex ${minting ? "h-[100vh]" : "h-full"} min-h-[100vh] w-full flex-col items-center bg-black px-1 pb-1`}>

@@ -50,10 +50,10 @@ export default function Decode() {
   const [loading, setLoading] = useState(false);
   const { userTG, reFetchUserData, goPage, userData, updateUserToken } =
     useContext(Context);
-  const backButton = useBackButton();
-  const onBackButtonClick = () => {
-    goPage("/");
-  };
+  // const backButton = useBackButton();
+  // const onBackButtonClick = () => {
+  //   goPage("/");
+  // };
   const updateUserTestScore = async () => {
     setLoading(true);
     try {
@@ -86,7 +86,7 @@ export default function Decode() {
   };
   const handleSubmit = async () => {
     await updateUserTestScore();
-    onBackButtonClick();
+    // onBackButtonClick();
   };
   const randomScore = async () => {
     let newScore = [...score];
@@ -97,15 +97,15 @@ export default function Decode() {
   useEffect(() => {
     randomScore();
   }, []);
-  useEffect(() => {
-    backButton.show();
-    backButton.on("click", onBackButtonClick);
-    return () => {
-      backButton.off("click", onBackButtonClick);
-      backButton.hide();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   backButton.show();
+  //   backButton.on("click", onBackButtonClick);
+  //   return () => {
+  //     backButton.off("click", onBackButtonClick);
+  //     backButton.hide();
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   return (
     <div className="relative flex h-full min-h-[100vh] w-full flex-col items-center justify-center gap-1 p-1">
       {questionIndex === 8 ? (

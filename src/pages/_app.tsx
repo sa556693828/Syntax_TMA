@@ -25,14 +25,14 @@ export default function App({ Component, pageProps }: AppProps) {
           twaReturnUrl: "https://t.me/DEC42_Syntax_BOT/MBTI",
         }}
       >
-        <TmaSDKLoader>
-          <Provider>
-            <Toaster />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </Provider>
-        </TmaSDKLoader>
+        {/* <TmaSDKLoader> */}
+        <Provider>
+          <Toaster />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </Provider>
+        {/* </TmaSDKLoader> */}
       </TonConnectUIProvider>
     </>
   );

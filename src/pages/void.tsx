@@ -9,6 +9,8 @@ import { EventEnum } from "@/types/types";
 import bg from "@/assets/bgV.svg";
 import Image from "next/image";
 import Button from "@/components/ui/button";
+import { sleep } from "@ton-community/assets-sdk/dist/utils";
+import { time } from "console";
 
 interface Prompt {
   model: string;
@@ -17,63 +19,77 @@ interface Prompt {
 }
 
 export default function Void() {
-  const url = "https://a3bc-61-220-186-2.ngrok-free.app/api/generate";
+  const url = "https://9549-61-220-186-2.ngrok-free.app/api/generate";
   const { goPage, userData, updateUserToken } = useContext(Context);
   const [inputMode, setInputMode] = useState(false);
+  const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [AIMode, setAIMode] = useState(false);
   const [userInput, setUserInput] = useState("");
   const [aiRes, setAiRes] = useState("");
   const router = useRouter();
-  const backButton = useBackButton();
+  // const backButton = useBackButton();
   const onBackButtonClick = () => {
     goPage("/");
   };
+  const reset = () => {
+    setInputMode(false);
+    setStep(0);
+    setLoading(false);
+    setAIMode(false);
+    setUserInput("");
+    setAiRes("");
+  }
 
   const aiAPI = async () => {
     try {
+      setLoading(true);
+      const model = [
+        "llama3",
+        "qwen2:latest"
+      ]
       const prompt = {
-        model: "llama3",
+        model: model[0],
         prompt: userInput,
         stream: false,
       };
-      // const response = await axios.post(url, prompt);
-      const sample = {
-        model: "llama3",
-        created_at: "2024-05-25T06:57:54.1377341Z",
-        response: "I'll do my best to help you out.",
-        done: true,
-        done_reason: "stop",
-        context: [
-          128006, 882, 128007, 271, 35734, 128009, 128006, 78191, 128007, 271,
-          2181, 5084, 1093, 499, 3940, 311, 2610, 264, 3488, 11, 719, 433, 2751,
-          4018, 1022, 13, 16910, 499, 4587, 312, 28810, 477, 4686, 701, 3488,
-          30, 358, 3358, 656, 856, 1888, 311, 1520, 499, 704, 13, 128009,
-        ],
-        total_duration: 1318726506,
-        load_duration: 1355500,
-        prompt_eval_duration: 343516000,
-        eval_count: 37,
-        eval_duration: 926039000,
-      };
-      // console.log(response.data);
-      // setAiRes(response.data.choices[0].text);
-      setAiRes(sample.response);
-      // if(response.data.choices[0].text) {
-      if (sample.response) {
+      const res = await axios.post(url, JSON.stringify(prompt), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      // console.log(res.data);
+      setAiRes(res.data.response);
+      if (res.data) {
+        setTimeout(() => {
+          setLoading(false);
+          setAIMode(true);
+        }, 2000);
         await updateUserToken(Number(userData.user_id), EventEnum.aiChat);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     }
   };
-  useEffect(() => {
-    backButton.show();
-    backButton.on("click", onBackButtonClick);
-    return () => {
-      backButton.off("click", onBackButtonClick);
-      backButton.hide();
-    };
-  }, []);
-
+  // useEffect(() => {
+  //   backButton.show();
+  //   backButton.on("click", onBackButtonClick);
+  //   return () => {
+  //     backButton.off("click", onBackButtonClick);
+  //     backButton.hide();
+  //   };
+  // }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     import("eruda").then((module) => {
+  //       module.default.init();
+  //     });
+  //   }
+  // }, []);
   return (
     <div className="flex h-[100vh] w-full flex-col items-center bg-black">
       <Image
@@ -82,16 +98,18 @@ export default function Void() {
         layout="fill"
         className="absolute left-0 top-0 z-10 object-cover object-center"
       />
-      <div className="z-20 flex h-24 w-full items-center justify-center bg-transparent px-6 text-lg">
-        <FaArrowLeftLong
-          size={20}
-          onClick={() => router.back()}
-          className="absolute left-6 cursor-pointer hover:opacity-60"
-        />
-        <a className="text-nowrap">
-          {inputMode ? "TALK TO THE VOID" : "THE VOID"}
-        </a>
-      </div>
+      {!loading && (
+        <div className="z-20 flex h-24 w-full items-center justify-center bg-transparent px-6 text-lg">
+          <FaArrowLeftLong
+            size={20}
+            onClick={inputMode ? () => reset() : () => router.back()}
+            className="absolute left-6 cursor-pointer hover:opacity-60"
+          />
+          <a className="text-nowrap">
+            {inputMode ? "TALK TO THE VOID" : "THE VOID"}
+          </a>
+        </div>
+      )}
       {!inputMode && (
         <div className="z-20 flex h-full w-full flex-col items-center justify-center px-1">
           <a className="text-xs uppercase tracking-[1.92px]">
@@ -109,47 +127,38 @@ export default function Void() {
         </div>
       )}
       {inputMode && (
-        <div className="z-20 flex h-full w-full flex-col items-center justify-between gap-4 overflow-hidden px-1 pt-14 text-center">
-          <a className="max-w-[300px] overflow-y-auto text-center text-lg">
-            {aiRes}
-          </a>
-          <div className="flex w-full flex-col items-center justify-end gap-9">
-            <a className="text-xs opacity-60">{`(${userInput.length}/300)`}</a>
-            <input
-              className="h-14 w-full rounded-md border border-blackBg bg-black p-2 caret-white outline-none"
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-            />
-            <Button handleClick={() => aiAPI()} className="h-[62px]">
+        <div className="z-20 flex h-full w-full flex-col items-center justify-end gap-4 overflow-hidden px-1 pt-14 text-center">
+          <div className="w-full absolute top-1/2 -translate-y-1/2 ">
+            {AIMode ? (
+              <div className={`transition-opacity h-[60vh] overflow-y-auto duration-1000 delay-200 ${AIMode ? "" : loading ? "opacity-0" : ""}`}>
+                <a className="max-w-[300px] text-center text-lg whitespace-pre-wrap">
+                  {aiRes}
+                  {/* {`I'm glad you asked!\n\nThere are many styles that can bring out the best in someone, depending on their personality, preferences, and goals. Here are some popular options:\n\n1. **Minimalist**: Simple, clean-cut clothing with a focus on comfort and functionality. Perfect for those who value ease and practicality.\n2. **Classic**: Timeless, elegant pieces with a sophisticated edge. Suitable for those who appreciate tradition and refinement.\n3. **Boho Chic**: Free-spirited, eclectic attire with a mix of vintage and modern elements. Ideal for creatives who embrace individuality.\n4. **Modern**: Bold, contemporary styles that make a statement. Great for those who want to stand out and showcase their personality.\n5. **Elegant**: Sophisticated, refined clothing with a focus on quality and attention to detail. Suitable for those who value luxury and poise.\n6. **Casual**: Relaxed, comfortable attire perfect for everyday wear. Ideal for those who prioritize ease and convenience.\n7. **Trendy**: Fashion-forward styles that keep up with the latest trends. Great for those who enjoy staying current and expressing themselves through fashion.\n\nWhich one resonates with you?`} */}
+                </a>
+              </div>
+            ) : (
+              <div className={`flex w-full flex-col items-center justify-end gap-9 transition-opacity duration-1000 delay-200 ${AIMode ? "opacity-0" : loading ? "opacity-0" : ""}`}>
+                <a className="text-xs opacity-60">{`(${userInput.length}/300)`}</a >
+                <input
+                  className="h-14 w-full rounded-md border border-blackBg bg-black p-2 caret-white outline-none"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                />
+              </div>
+            )}
+          </div>
+          {!loading && !AIMode && (
+            <Button handleClick={() => aiAPI()} className="h-[62px] flex items-center justify-center">
               {`CALL INTO THE VOID (2)`}
             </Button>
-          </div>
+          )}
+          {AIMode && (
+            <Button handleClick={() => reset()} className="h-[62px] flex items-center justify-center">
+              {`RETURN`}
+            </Button>
+          )}
         </div>
       )}
-      {/* {answer ? (
-        <div className="flex flex-col items-center justify-center gap-1">
-          <h1 className="text-2xl font-bold">Answer</h1>
-          <p>{answer}</p>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center gap-1">
-          <h1 className="text-2xl font-bold">Prompt</h1>
-          <textarea
-            className="h-48 w-full rounded-lg border border-gray-300 p-2"
-            value={prompt.prompt}
-            onChange={(e) => setPrompt({ ...prompt, prompt: e.target.value })}
-          />
-          <button
-            className="mt-2 rounded-lg border border-white px-6 py-2 text-white"
-            onClick={async () => {
-              const response = await aiAPI();
-              setAnswer(response.choices[0].text);
-            }}
-          >
-            Submit
-          </button>
-        </div>
-      )} */}
     </div>
   );
 }

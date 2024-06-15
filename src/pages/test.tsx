@@ -47,7 +47,7 @@ export default function Test() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(new Array(8).fill(0.5));
   const [loading, setLoading] = useState(false);
-  const backButton = useBackButton();
+  // const backButton = useBackButton();
   const onBackButtonClick = () => {
     goPage("/");
   };
@@ -81,15 +81,15 @@ export default function Test() {
     goPage("/art");
   };
 
-  useEffect(() => {
-    backButton.show();
-    backButton.on("click", onBackButtonClick);
-    return () => {
-      backButton.off("click", onBackButtonClick);
-      backButton.hide();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   backButton.show();
+  //   backButton.on("click", onBackButtonClick);
+  //   return () => {
+  //     backButton.off("click", onBackButtonClick);
+  //     backButton.hide();
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   return (
     <div className="relative flex h-[100dvh] w-full flex-col items-center justify-center gap-1 p-1">
       <Card className="flex h-full flex-col items-start justify-start gap-4 p-12">

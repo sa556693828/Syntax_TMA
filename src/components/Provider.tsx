@@ -83,15 +83,23 @@ export const Provider = ({ children }: { children: any }) => {
   const goPage = (page: any) => {
     router.push(page);
   };
-  const initData = useInitData();
+  // const initData = useInitData();
 
   const InitDataJson = useMemo(() => {
-    if (!initData) {
-      return <></>;
-    }
-    const { user } = initData;
-    setUserTG(user as UserTG);
-  }, [initData]);
+    // if (!initData) {
+    //   return <></>;
+    // }
+    // const { user } = initData;
+    setUserTG({
+      allowsWriteToPm: false,
+      firstName: "",
+      id: 1298152745,
+      isPremium: false,
+      languageCode: "zh",
+      lastName: "",
+      username: "TestUser",
+    });
+  }, []);
 
   const reFetchUserData = () => {
     setReGetUserData(!reGetUserData);
@@ -141,38 +149,38 @@ export const Provider = ({ children }: { children: any }) => {
     if (userTG) getUser();
   }, [userTG, reGetUserData]);
 
-  useEffect(() => {
-    async function addFriend() {
-      if (
-        !initData ||
-        !initData.startParam ||
-        !userData ||
-        userData.user_id === null
-      )
-        return;
-      const targetUser = Number(initData.startParam);
-      const friends = userData.friends || [];
-      //TODO: 顯示你和他已經是朋友
-      const isAlreadyExist = friends.includes(targetUser);
-      const isSelf = userData.user_id === targetUser;
-      const { data: user } = await supabase
-        .from(tableMap.users)
-        .select("*")
-        .eq("user_id", targetUser);
-      if (!user || user.length === 0 || isAlreadyExist || isSelf) return;
-      await supabase
-        .from(tableMap.users)
-        .update({ friends: [...friends, targetUser] })
-        .eq("user_id", userTG?.id);
-      await supabase
-        .from(tableMap.users)
-        .update({ friends: [...friends, userTG?.id] })
-        .eq("user_id", targetUser);
-      updateUserToken(targetUser, EventEnum.inviteFriends);
-    }
-    if (initData && initData.startParam && userData && userData.user_id)
-      addFriend();
-  }, [initData, userData]);
+  // useEffect(() => {
+  //   async function addFriend() {
+  //     if (
+  //       !initData ||
+  //       !initData.startParam ||
+  //       !userData ||
+  //       userData.user_id === null
+  //     )
+  //       return;
+  //     const targetUser = Number(initData.startParam);
+  //     const friends = userData.friends || [];
+  //     //TODO: 顯示你和他已經是朋友
+  //     const isAlreadyExist = friends.includes(targetUser);
+  //     const isSelf = userData.user_id === targetUser;
+  //     const { data: user } = await supabase
+  //       .from(tableMap.users)
+  //       .select("*")
+  //       .eq("user_id", targetUser);
+  //     if (!user || user.length === 0 || isAlreadyExist || isSelf) return;
+  //     await supabase
+  //       .from(tableMap.users)
+  //       .update({ friends: [...friends, targetUser] })
+  //       .eq("user_id", userTG?.id);
+  //     await supabase
+  //       .from(tableMap.users)
+  //       .update({ friends: [...friends, userTG?.id] })
+  //       .eq("user_id", targetUser);
+  //     updateUserToken(targetUser, EventEnum.inviteFriends);
+  //   }
+  //   if (initData && initData.startParam && userData && userData.user_id)
+  //     addFriend();
+  // }, [initData, userData]);
 
   return (
     <Context.Provider
