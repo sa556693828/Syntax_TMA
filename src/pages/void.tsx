@@ -51,7 +51,7 @@ export default function Void() {
       const prompt = {
         model: model[0],
         prompt: userInput,
-        stream: true,
+        stream: false,
       };
       const res = await axios.post(url, JSON.stringify(prompt), {
         headers: {
@@ -83,13 +83,13 @@ export default function Void() {
       backButton.hide();
     };
   }, []);
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     import("eruda").then((module) => {
-  //       module.default.init();
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      import("eruda").then((module) => {
+        module.default.init();
+      });
+    }
+  }, []);
   return (
     <div className="flex h-[100vh] w-full flex-col items-center bg-black">
       <Image
