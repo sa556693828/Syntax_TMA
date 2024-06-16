@@ -132,16 +132,64 @@ export const Provider = ({ children }: { children: any }) => {
   };
 
   useEffect(() => {
-    async function getUser() {
-      const { data: user } = await supabase
-        .from(tableMap.users)
-        .select("*")
-        .eq("user_id", userTG?.id);
-      if (user && user.length > 0) {
-        setUserData(user[0] as UserData);
+    async function getOrCreateUser({
+      userId,
+      userName,
+      firstName,
+      lastName,
+    }: {
+      userId: number;
+      userName?: string;
+      firstName?: string;
+      lastName?: string;
+    }) {
+      try {
+        const { data: existingUser, error: userError } = await supabase
+          .from(tableMap.users)
+          .select("*")
+          .eq("user_id", userId);
+        if (userError) {
+          throw userError;
+        }
+        if (existingUser.length > 0) {
+          return existingUser;
+        } else {
+          const { error: newUserError } = await supabase
+            .from(tableMap.users)
+            .insert([
+              {
+                user_id: userId,
+                username: userName ? userName : undefined,
+                first_name: firstName ? firstName : undefined,
+                last_name: lastName ? lastName : undefined,
+              },
+            ])
+            .single();
+          if (newUserError) {
+            throw newUserError;
+          }
+          const { data: newUserRows, error: newUserRowsError } = await supabase
+            .from(tableMap.users)
+            .select("*")
+            .eq("user_id", userId)
+            .single();
+
+          if (newUserRowsError) {
+            throw newUserRowsError;
+          }
+          return newUserRows;
+        }
+      } catch (error) {
+        console.error("Error creating user:", error);
       }
     }
-    if (userTG) getUser();
+    if (userTG)
+      getOrCreateUser({
+        userId: Number(userTG.id),
+        userName: userTG.username,
+        firstName: userTG.firstName,
+        lastName: userTG.lastName,
+      });
   }, [userTG, reGetUserData]);
 
   useEffect(() => {
