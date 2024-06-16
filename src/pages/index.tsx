@@ -61,6 +61,7 @@ export default function Home() {
     },
   ];
   const pointIntro = `YOU EARN POINTS (PTS) THROUGH PLAYING WITH SYNTAX IN VARIOUS WAYS AND BY SHARING SYNTAX WITH YOUR FRIENDS!\n\nYOUR POINTS CAN BE EXCHANGED FOR SYNTAX TOKENS (STX) AND WILL BE USED FOR VARIOUS REWARDS IN THE FUTURE AT THE SYNTKN EXCHANGE!`;
+
   useEffect(() => {
     async function getOrCreateUser({
       userId,
@@ -108,6 +109,7 @@ export default function Home() {
             throw newUserRowsError;
           }
           reFetchUserData();
+          console.log("newUserRows", newUserRows[0]);
           setUserData(newUserRows[0] as UserData);
           return newUserRows;
         }
@@ -123,11 +125,9 @@ export default function Home() {
         lastName: userTG.lastName,
       });
   }, [userTG]);
-  useEffect(() => {
-    console.log("userData", userTG);
-    console.log("userTG", userData);
-    console.log("userData.score === null", userData?.score === null);
 
+  useEffect(() => {
+    console.log("userData", userData);
     if (userTG && userData && userData.score === null) {
       router.push("/initStory");
     }
