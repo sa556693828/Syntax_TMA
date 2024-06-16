@@ -68,7 +68,11 @@ export default function Exchange() {
       const intervalId = setInterval(async () => {
         const isDifferent = await checkTx(txHash);
         if (isDifferent) {
-          await updateUserToken(Number(userData.user_id), EventEnum.buyToken, mintAmount);
+          await updateUserToken(
+            Number(userData.user_id),
+            EventEnum.buyToken,
+            mintAmount,
+          );
           toast.success("Mint success!");
           setLoading(false);
           setMintAmount(0);
@@ -80,7 +84,11 @@ export default function Exchange() {
   }, [checkingTx, checkTx, txHash]);
 
   const mintJetton = useCallback(async () => {
-    if (!wallet || !mintAmount || !userData?.tokens || mintAmount > (userData?.tokens || 0)) return;
+    if (!wallet || !mintAmount || !userData?.tokens) return;
+    if (mintAmount > userData?.tokens) {
+      toast.error("Insufficient balance");
+      return;
+    }
     const provider = await assetsConnectSDK(tonConnectUI as any);
     const url = `https://tonapi.io/v2/blockchain/accounts/${jettonMaster}/transactions?after_lt=0&sort_order=desc`;
 
@@ -173,8 +181,8 @@ export default function Exchange() {
     }
   };
   const disConnect = async () => {
-    await tonConnectUI.disconnect()
-  }
+    await tonConnectUI.disconnect();
+  };
   const handleCheckTon = () => {
     window.open(`https://tonviewer.com/${userFriendlyAddress}`, "_blank");
   };
@@ -189,7 +197,9 @@ export default function Exchange() {
   }, []);
 
   return (
-    <div className={`flex ${minting ? "h-[100vh]" : "h-full"} min-h-[100vh] w-full flex-col items-center bg-black px-1 pb-1`}>
+    <div
+      className={`flex ${minting ? "h-[100vh]" : "h-full"} min-h-[100vh] w-full flex-col items-center bg-black px-1 pb-1`}
+    >
       <div className="z-20 flex h-24 w-full flex-shrink-0 items-center justify-center bg-transparent px-6 text-lg">
         <FaArrowLeftLong
           size={20}
@@ -200,18 +210,29 @@ export default function Exchange() {
       </div>
       {wallet ? (
         minting ? (
-          <div className="flex w-full h-full flex-col gap-1">
+          <div className="flex h-full w-full flex-col gap-1">
             <Card className="flex h-full flex-col items-start justify-center gap-4 p-12">
               <GridDot count={8} />
               <a>{`MINTING... PLEASE CHECK YOUR TON WALLET AFTER 2 MINUTES.`}</a>
             </Card>
-            <Button className="h-[62px] uppercase flex-shrink-0 flex items-center justify-center" disabled={loading} handleClick={loading ? () => { } : () => setMinting(false)}>{loading ? <div className="loader" /> : "Return"}</Button>
+            <Button
+              className="flex h-[62px] flex-shrink-0 items-center justify-center uppercase"
+              disabled={loading}
+              handleClick={loading ? () => {} : () => setMinting(false)}
+            >
+              {loading ? <div className="loader" /> : "Return"}
+            </Button>
           </div>
         ) : (
           <div className="flex w-full flex-col gap-1">
             <InfoCard className="h-[82px]">
               <a>wallet:</a>
-              <a className="font-bold underline underline-offset-2 cursor-pointer" onClick={handleCheckTon}>{concatAddress(userFriendlyAddress)}</a>
+              <a
+                className="cursor-pointer font-bold underline underline-offset-2"
+                onClick={handleCheckTon}
+              >
+                {concatAddress(userFriendlyAddress)}
+              </a>
             </InfoCard>
             <InfoCard className="h-[82px]">
               <a>points:</a>
@@ -251,7 +272,11 @@ export default function Exchange() {
             </InfoCard>
             <Button
               className="h-[62px] uppercase"
-              disabled={mintAmount === 0 || !mintAmount || mintAmount > (userData?.tokens || 0)}
+              disabled={
+                mintAmount === 0 ||
+                !mintAmount ||
+                mintAmount > (userData?.tokens || 0)
+              }
               handleClick={() => mintJetton()}
             >
               Mint
