@@ -102,14 +102,13 @@ export default function Home() {
           const { data: newUserRows, error: newUserRowsError } = await supabase
             .from(tableMap.users)
             .select("*")
-            .eq("user_id", userId)
-            .single();
+            .eq("user_id", userId);
 
           if (newUserRowsError) {
             throw newUserRowsError;
           }
           reFetchUserData();
-          console.log("newUserRows", newUserRows[0]);
+          console.log("newUserRows", newUserRows);
           setUserData(newUserRows[0] as UserData);
           return newUserRows;
         }
