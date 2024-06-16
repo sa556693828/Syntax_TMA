@@ -88,11 +88,6 @@ export default function Home() {
     };
   }, []);
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      import("eruda").then((module) => {
-        module.default.init();
-      });
-    }
     postEvent("web_app_expand");
   }, []);
 
