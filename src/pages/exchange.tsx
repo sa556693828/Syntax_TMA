@@ -83,7 +83,7 @@ export default function Exchange() {
     }
   }, [checkingTx, checkTx, txHash]);
 
-  const mintJetton = useCallback(async () => {
+  const mintJetton = async () => {
     if (!wallet || !mintAmount || !userData?.tokens) return;
     if (mintAmount > userData?.tokens) {
       toast.error("Insufficient balance");
@@ -142,7 +142,7 @@ export default function Exchange() {
     } catch (e) {
       console.log(e);
     }
-  }, [checkTx]);
+  };
 
   const sendTon = async () => {
     const body = beginCell()
@@ -177,7 +177,7 @@ export default function Exchange() {
     const isValid = /^\d*$/.test(value);
 
     if (isValid) {
-      setMintAmount(value);
+      setMintAmount(Number(value));
     }
   };
   const disConnect = async () => {
@@ -244,7 +244,7 @@ export default function Exchange() {
                 <input
                   value={mintAmount}
                   type="text"
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e)}
                   className="h-full w-full appearance-none bg-transparent text-right font-bold ring-transparent"
                 />
                 <a className="pt-[2px] font-bold">PTS</a>
