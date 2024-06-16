@@ -93,6 +93,9 @@ export default function Home() {
                 username: userName ? userName : undefined,
                 first_name: firstName ? firstName : undefined,
                 last_name: lastName ? lastName : undefined,
+                inviteFrom_id: initData?.startParam
+                  ? initData?.startParam
+                  : undefined,
               },
             ])
             .single();
@@ -108,7 +111,6 @@ export default function Home() {
             throw newUserRowsError;
           }
           reFetchUserData();
-          console.log("newUserRows", newUserRows);
           setUserData(newUserRows[0] as UserData);
           return newUserRows;
         }
