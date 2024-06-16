@@ -82,7 +82,7 @@ export default function Home() {
           throw userError;
         }
         if (existingUser.length > 0) {
-          return existingUser;
+          setUserData(existingUser[0] as UserData);
         } else {
           const { error: newUserError } = await supabase
             .from(tableMap.users)
@@ -107,6 +107,7 @@ export default function Home() {
           if (newUserRowsError) {
             throw newUserRowsError;
           }
+          setUserData(newUserRows[0] as UserData);
           return newUserRows;
         }
       } catch (error) {
@@ -122,6 +123,10 @@ export default function Home() {
       });
   }, [userTG]);
   useEffect(() => {
+    console.log("userData", userTG);
+    console.log("userTG", userData);
+    console.log("userData.score === null", userData?.score === null);
+
     if (userTG && userData && userData.score === null) {
       router.push("/initStory");
     }
