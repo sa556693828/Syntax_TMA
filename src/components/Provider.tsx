@@ -18,7 +18,7 @@ export const Context = createContext<{
   reFetchUserData: () => void;
   updateUserToken: (userId: number, event: EventType, amount?: number) => void;
 }>({
-  goPage: () => { },
+  goPage: () => {},
   userTG: {
     allowsWriteToPm: false,
     firstName: "",
@@ -46,8 +46,8 @@ export const Context = createContext<{
     friends: [],
     tokens: null,
   },
-  reFetchUserData: () => { },
-  updateUserToken: () => { },
+  reFetchUserData: () => {},
+  updateUserToken: () => {},
 });
 
 export const Provider = ({ children }: { children: any }) => {
@@ -96,7 +96,11 @@ export const Provider = ({ children }: { children: any }) => {
   const reFetchUserData = () => {
     setReGetUserData(!reGetUserData);
   };
-  const updateUserToken = async (userId: number, event: EventType, amount?: number) => {
+  const updateUserToken = async (
+    userId: number,
+    event: EventType,
+    amount?: number,
+  ) => {
     const addPoint = pointList[event];
     if (!userData) return;
     let totalPoint: number;
@@ -127,7 +131,6 @@ export const Provider = ({ children }: { children: any }) => {
     }
   };
 
-
   useEffect(() => {
     async function getUser() {
       const { data: user } = await supabase
@@ -143,6 +146,7 @@ export const Provider = ({ children }: { children: any }) => {
 
   useEffect(() => {
     async function addFriend() {
+      console.log("addFriend", initData?.startParam);
       if (
         !initData ||
         !initData.startParam ||

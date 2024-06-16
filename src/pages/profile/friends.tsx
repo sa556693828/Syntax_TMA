@@ -29,6 +29,7 @@ export default function Friends() {
           return data && data.length > 0 ? data[0] : null;
         }),
       );
+      if (data.length === 0) return;
       setFriendsData(data as UserData[]);
     };
     if (userData.friends) {
@@ -46,13 +47,13 @@ export default function Friends() {
           <div
             key={index}
             onClick={() => {
-              goPage(`/profile/${friend.user_id}/MBTI`);
+              goPage(`/profile/${friend?.user_id}/MBTI`);
             }}
             className="relative flex h-[189px] w-full cursor-pointer flex-col justify-end overflow-hidden rounded-lg bg-white uppercase hover:opacity-80"
           >
             <Box
-              userID={friend.user_id as number}
-              userScore={friend.score as any}
+              userID={friend?.user_id as number}
+              userScore={friend?.score as any}
               overScreen={true}
             />
             <a className="absolute bottom-1 left-1 z-50 text-xs text-white">
