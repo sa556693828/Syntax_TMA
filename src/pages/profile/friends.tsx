@@ -11,7 +11,7 @@ export default function Friends() {
   const [friendsData, setFriendsData] = useState<UserData[]>([]);
 
   const handleAddFriendClick = () => {
-    const url = "t.me/DEC42_Syntax_BOT/MBTI?startapp=1298152745";
+    const url = `t.me/DEC42_Syntax_BOT/MBTI?startapp=${userTG.id}`;
     const text = `I'm playing Decode Syntax, a fun and insightful game that helps you understand yourself better. Let's play together!`;
     window.open(`https://t.me/share/url?url=${url}&text=${text}`, "_blank");
   };
