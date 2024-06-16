@@ -9,7 +9,7 @@ import {
   useTonWallet,
 } from "@tonconnect/ui-react";
 import { useBackButton } from "@tma.js/sdk-react";
-import { beginCell, toNano } from "@ton/core";
+import { beginCell, fromNano, toNano } from "@ton/core";
 import Button from "@/components/ui/button";
 import { assetsConnectSDK } from "@/lib/use-connect";
 import {
@@ -46,6 +46,8 @@ export default function Exchange() {
   const [mintAmount, setMintAmount] = useState(0);
   const [minting, setMinting] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [tonBal, setTonBal] = useState("");
+  const [jettonBal, setJettonBal] = useState("");
 
   const checkTx = useCallback(async (initialTxHash: string) => {
     const url = `https://tonapi.io/v2/blockchain/accounts/${jettonMaster}/transactions?after_lt=0&sort_order=desc`;
@@ -82,7 +84,6 @@ export default function Exchange() {
       return () => clearInterval(intervalId);
     }
   }, [checkingTx, checkTx, txHash]);
-
   const mintJetton = async () => {
     if (!wallet || !mintAmount || !userData?.tokens) return;
     if (mintAmount > userData?.tokens) {
@@ -127,7 +128,6 @@ export default function Exchange() {
       //   ],
       // };
       // const result = await tonConnectUI.sendTransaction(transaction as any);
-
       await contract.send(
         provider.sender,
         { value: toNano(0.1) },
@@ -143,6 +143,22 @@ export default function Exchange() {
       console.log(e);
     }
   };
+  const getBalance = async () => {
+    if (!wallet) return;
+    try {
+      const tonBalanceUrl = `https://tonapi.io/v2/accounts/${userFriendlyAddress}`;
+      const jettonBalanveUrl = `https://tonapi.io/v2/accounts/${userFriendlyAddress}/jettons/${jettonMaster}`;
+      const tonBalanceRes = await axios.get(tonBalanceUrl);
+      const jettonBalanceRes = await axios.get(jettonBalanveUrl);
+      setTonBal(fromNano(tonBalanceRes.data.balance));
+      setJettonBal(fromNano(jettonBalanceRes.data.balance));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getBalance();
+  }, [checkingTx, checkTx, txHash, wallet]);
 
   const sendTon = async () => {
     const body = beginCell()
@@ -261,6 +277,14 @@ export default function Exchange() {
             <InfoCard className="h-[82px]">
               <a>symbol:</a>
               <a className="font-bold">STX</a>
+            </InfoCard>
+            <InfoCard className="h-[82px]">
+              <a>TON Balance:</a>
+              <a className="font-bold">{Number(tonBal).toFixed(4)}</a>
+            </InfoCard>
+            <InfoCard className="h-[82px]">
+              <a>STX Balance:</a>
+              <a className="font-bold">{jettonBal}</a>
             </InfoCard>
             <InfoCard className="h-[82px]">
               <a>type:</a>
