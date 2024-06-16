@@ -24,7 +24,7 @@ export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [introMode, setIntroMode] = useState(false);
   const [loadingTime, setLoadingTime] = useState(false);
-  const { goPage, updateUserToken } = useContext(Context);
+  const { goPage, updateUserToken, reFetchUserData } = useContext(Context);
   const meFunction: MeFunction[] = [
     {
       title: "DECODE SYNTAX",
@@ -107,6 +107,7 @@ export default function Home() {
           if (newUserRowsError) {
             throw newUserRowsError;
           }
+          reFetchUserData();
           setUserData(newUserRows[0] as UserData);
           return newUserRows;
         }
