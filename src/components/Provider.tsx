@@ -10,6 +10,7 @@ import {
 } from "@/types/types";
 import { supabase } from "@/utils/supabase";
 import { pointList } from "@/constants/pointList";
+import axios from "axios";
 
 export const Context = createContext<{
   goPage: (page: any) => void;
@@ -96,6 +97,24 @@ export const Provider = ({ children }: { children: any }) => {
   const reFetchUserData = () => {
     setReGetUserData(!reGetUserData);
   };
+  const submitTask = async (userId: number, taskId: number) => {
+    try {
+      const strDate = new Date().toLocaleDateString();
+      console.log("strDate", strDate);
+      const res = await axios.post("/api/tasks", {
+        user_id: userId,
+        task_id: taskId,
+      });
+      if (res.data.code === 200) {
+        console.log("Task submitted successfully!", res.data);
+      } else {
+        console.error(`Error: ${res.data.msg}`);
+      }
+    } catch (error) {
+      console.error("Error submitting task:", error);
+    }
+  };
+
   const updateUserToken = async (
     userId: number,
     event: EventType,

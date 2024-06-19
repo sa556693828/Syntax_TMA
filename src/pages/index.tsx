@@ -9,6 +9,7 @@ import ProfileTab from "@/components/pagesUI/ProfilePage/ProfileTab";
 import Box from "@/components/p5/Art";
 import { postEvent } from "@tma.js/sdk";
 import GridDot from "@/components/ui/gridDot";
+import axios from "axios";
 
 interface MeFunction {
   title: string;
@@ -25,6 +26,21 @@ export default function Home() {
   const [introMode, setIntroMode] = useState(false);
   const [loadingTime, setLoadingTime] = useState(false);
   const { goPage, updateUserToken, reFetchUserData } = useContext(Context);
+  const submitTask = async (userId: number, taskId: number) => {
+    try {
+      const res = await axios.post("/api/tasks", {
+        user_id: userId,
+        task_id: taskId,
+      });
+      if (res.data.code === 200) {
+        console.log("Task submitted successfully!", res.data);
+      } else {
+        console.error(`Error: ${res.data.msg}`);
+      }
+    } catch (error) {
+      console.error("Error submitting task:", error);
+    }
+  };
   const meFunction: MeFunction[] = [
     {
       title: "DECODE SYNTAX",
@@ -59,9 +75,24 @@ export default function Home() {
         goPage("/exchange");
       },
     },
+    {
+      title: "test",
+      content: "!",
+      left: "REWARDS",
+      right: "AWAIT",
+      onClick: () => {
+        submitTask(userTG.id, 2);
+      },
+    },
   ];
   const pointIntro = `YOU EARN POINTS (PTS) THROUGH PLAYING WITH SYNTAX IN VARIOUS WAYS AND BY SHARING SYNTAX WITH YOUR FRIENDS!\n\nYOUR POINTS CAN BE EXCHANGED FOR SYNTAX TOKENS (STX) AND WILL BE USED FOR VARIOUS REWARDS IN THE FUTURE AT THE SYNTKN EXCHANGE!`;
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      import("eruda").then((module) => {
+        module.default.init();
+      });
+    }
+  }, []);
   useEffect(() => {
     async function getOrCreateUser({
       userId,
@@ -128,7 +159,6 @@ export default function Home() {
   }, [userTG]);
 
   useEffect(() => {
-    console.log("userData", userData);
     if (userTG && userData && userData.score === null) {
       router.push("/initStory");
     }

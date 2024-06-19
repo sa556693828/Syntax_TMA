@@ -1,6 +1,7 @@
 "use server";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "@/utils/supabase";
+import { tableMap } from "@/types/types";
 
 export default async function handler(
   req: NextApiRequest,
@@ -35,8 +36,8 @@ export default async function handler(
 
       try {
         //查询是否有该任务存在
-        const { data, error } = await supabase
-          .from("tasks")
+        const { data: taskData, error } = await supabase
+          .from(tableMap.tasks)
           .select()
           .eq("id", task_id);
         if (error) {
@@ -44,7 +45,7 @@ export default async function handler(
           res.status(200).json({ code: 500, msg: "Server error", data: {} });
           return;
         }
-        if (data.length == 0) {
+        if (taskData.length == 0) {
           //该任务不存在
           res
             .status(200)
@@ -54,16 +55,16 @@ export default async function handler(
         //任务存在 查询是否完成足够次数 若今天次数已满 返回错误信息 否则 插入一条数据
         const strDate = new Date().toLocaleDateString();
         const { data: dataTasks, error: errorTasks } = await supabase
-          .from("user_tasks")
+          .from(tableMap.user_tasks)
           .select("id")
           .eq("user_id", user_id)
           .eq("insert_date", strDate)
           .eq("task_id", task_id);
         if (dataTasks) {
-          if (data[0].times_limit > dataTasks.length) {
+          if (taskData[0].times_limit > dataTasks.length) {
             //如果 可完成次数 比 已完成次数多 则添加数据
             const { data: dataInsert, error: errorInsert } = await supabase
-              .from("user_tasks")
+              .from(tableMap.user_tasks)
               .insert([
                 {
                   user_id: user_id,
@@ -74,9 +75,11 @@ export default async function handler(
               .select();
             if (dataInsert) {
               // 如果插入成功，则返回task信息
-              res
-                .status(200)
-                .json({ code: 200, msg: "Success", data: { data: data[0] } });
+              res.status(200).json({
+                code: 200,
+                msg: "Success",
+                data: { data: taskData[0] },
+              });
             } else {
               res
                 .status(200)
@@ -88,13 +91,11 @@ export default async function handler(
               .json({ code: 430, msg: "Times limit error", data: {} });
           }
         } else {
-          res
-            .status(200)
-            .json({
-              code: 500,
-              msg: "Server error",
-              data: { error: errorTasks },
-            });
+          res.status(200).json({
+            code: 500,
+            msg: "Server error",
+            data: { error: errorTasks },
+          });
         }
       } catch (e) {
         res.status(200).json({ code: 500, msg: "server error", data: {} });

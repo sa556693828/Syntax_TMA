@@ -39,15 +39,12 @@ export default function Void() {
     setAIMode(false);
     setUserInput("");
     setAiRes("");
-  }
+  };
 
   const aiAPI = async () => {
     try {
       setLoading(true);
-      const model = [
-        "llama3",
-        "qwen2:latest"
-      ]
+      const model = ["llama3", "qwen2:latest"];
       const prompt = {
         model: model[0],
         prompt: userInput,
@@ -83,13 +80,7 @@ export default function Void() {
       backButton.hide();
     };
   }, []);
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     import("eruda").then((module) => {
-  //       module.default.init();
-  //     });
-  //   }
-  // }, []);
+
   return (
     <div className="flex h-[100vh] w-full flex-col items-center bg-black">
       <Image
@@ -128,17 +119,21 @@ export default function Void() {
       )}
       {inputMode && (
         <div className="z-20 flex h-full w-full flex-col items-center justify-end gap-4 overflow-hidden px-1 pt-14 text-center">
-          <div className="w-full absolute top-1/2 -translate-y-1/2 ">
+          <div className="absolute top-1/2 w-full -translate-y-1/2 ">
             {AIMode ? (
-              <div className={`transition-opacity h-[60vh] overflow-y-auto duration-1000 delay-200 ${AIMode ? "" : loading ? "opacity-0" : ""}`}>
-                <a className="max-w-[300px] text-center text-lg whitespace-pre-wrap">
+              <div
+                className={`h-[60vh] overflow-y-auto transition-opacity delay-200 duration-1000 ${AIMode ? "" : loading ? "opacity-0" : ""}`}
+              >
+                <a className="max-w-[300px] whitespace-pre-wrap text-center text-lg">
                   {aiRes}
                   {/* {`I'm glad you asked!\n\nThere are many styles that can bring out the best in someone, depending on their personality, preferences, and goals. Here are some popular options:\n\n1. **Minimalist**: Simple, clean-cut clothing with a focus on comfort and functionality. Perfect for those who value ease and practicality.\n2. **Classic**: Timeless, elegant pieces with a sophisticated edge. Suitable for those who appreciate tradition and refinement.\n3. **Boho Chic**: Free-spirited, eclectic attire with a mix of vintage and modern elements. Ideal for creatives who embrace individuality.\n4. **Modern**: Bold, contemporary styles that make a statement. Great for those who want to stand out and showcase their personality.\n5. **Elegant**: Sophisticated, refined clothing with a focus on quality and attention to detail. Suitable for those who value luxury and poise.\n6. **Casual**: Relaxed, comfortable attire perfect for everyday wear. Ideal for those who prioritize ease and convenience.\n7. **Trendy**: Fashion-forward styles that keep up with the latest trends. Great for those who enjoy staying current and expressing themselves through fashion.\n\nWhich one resonates with you?`} */}
                 </a>
               </div>
             ) : (
-              <div className={`flex w-full flex-col items-center justify-end gap-9 transition-opacity duration-1000 delay-200 ${AIMode ? "opacity-0" : loading ? "opacity-0" : ""}`}>
-                <a className="text-xs opacity-60">{`(${userInput.length}/300)`}</a >
+              <div
+                className={`flex w-full flex-col items-center justify-end gap-9 transition-opacity delay-200 duration-1000 ${AIMode ? "opacity-0" : loading ? "opacity-0" : ""}`}
+              >
+                <a className="text-xs opacity-60">{`(${userInput.length}/300)`}</a>
                 <input
                   className="h-14 w-full rounded-md border border-blackBg bg-black p-2 caret-white outline-none"
                   value={userInput}
@@ -148,12 +143,18 @@ export default function Void() {
             )}
           </div>
           {!loading && !AIMode && (
-            <Button handleClick={() => aiAPI()} className="h-[62px] flex items-center justify-center">
+            <Button
+              handleClick={() => aiAPI()}
+              className="flex h-[62px] items-center justify-center"
+            >
               {`CALL INTO THE VOID (2)`}
             </Button>
           )}
           {AIMode && (
-            <Button handleClick={() => reset()} className="h-[62px] flex items-center justify-center">
+            <Button
+              handleClick={() => reset()}
+              className="flex h-[62px] items-center justify-center"
+            >
               {`RETURN`}
             </Button>
           )}

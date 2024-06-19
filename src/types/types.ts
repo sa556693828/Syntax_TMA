@@ -5,7 +5,9 @@ export type TableName =
   | "chat_members"
   | "group_config"
   | "group_tags"
-  | "user_in_chat";
+  | "user_in_chat"
+  | "user_tasks"
+  | "tasks";
 export const tableMap: Record<TableName, TableName> = {
   artist: "artist",
   users: "users",
@@ -14,6 +16,8 @@ export const tableMap: Record<TableName, TableName> = {
   group_config: "group_config",
   group_tags: "group_tags",
   user_in_chat: "user_in_chat",
+  tasks: "tasks",
+  user_tasks: "user_tasks",
 };
 export type UserData = {
   user_id: number | null;
