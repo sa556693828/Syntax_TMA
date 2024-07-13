@@ -19,7 +19,7 @@ interface Prompt {
 }
 
 export default function Void() {
-  const url = "https://9549-61-220-186-2.ngrok-free.app/api/generate";
+  const url = "https://61d1-61-220-186-2.ngrok-free.app/api/generate";
   const { goPage, userData, updateUserToken } = useContext(Context);
   const [inputMode, setInputMode] = useState(false);
   const [step, setStep] = useState(0);
